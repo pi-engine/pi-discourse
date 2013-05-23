@@ -1,0 +1,79 @@
+<script type="text/template" id="category-create-template">
+<div id="discourse-modal" class="ember-view modal hidden in" style="display: block;">
+    <div id="ember285" class="ember-view">
+        <div class="modal-header">
+            <a id="close-create-window" class="close" data-dismiss="modal">
+                <i class="icon-remove icon"></i>
+            </a>
+            <h3>Create Category</h3>
+        </div>
+        <div id="modal-alert" style="display: none;"></div>
+    </div>
+    <div id="ember288" class="ember-view">
+        <div id="ember880" class="ember-view">
+            <div class="modal-body">
+                <form>
+                    <label>Category Name</label>
+                    <input id="new-category-name" class="ember-view ember-text-field" placeholder="Should be short and succinct." maxlength="50" type="text">
+                    <div class="description-controls" style="margin-bottom: 20px">
+                        <label>Description</label>
+                        <input id="new-category-description" class="ember-view ember-text-field" placeholder="Description of this category." maxlength="50" type="text">
+                    </div>
+                <!-- 
+                    <label>Hotness</label>
+                    <div style="display:inline;width:50px;height:60px;">
+                        <canvas width="50" height="60px"></canvas>
+                        <input type="text" id="hotness-dial" data-fgcolor="red" style="width: 29px; height: 16px; position: absolute; vertical-align: middle; margin-top: 16px; margin-left: -39px; border: 0px; background-image: none; font-weight: bold; font-style: normal; font-variant: normal; font-size: 12px; line-height: normal; font-family: Arial; text-align: center; color: rgb(255, 0, 0); padding: 0px; -webkit-appearance: none; background-position: initial initial; background-repeat: initial initial;">
+                    </div>
+                -->
+                    <label>Badge colors</label>
+                    <div class="category-color-editor">
+                        <span class="badge-category" style="background-color: #AB9364; color: #FFFFFF;" data-bindattr-36="36">preview</span>
+                        <div class="input-prepend input-append" style="margin-top: 10px;">
+                            <span class="color-title">Background color:</span>
+                            <span class="add-on">#</span>
+                            <input id="new-category-background-color" class="ember-view ember-text-field" placeholder="Any web color" maxlength="6" type="text" value="772277">
+                        <!--
+                            <div id="ember896" class="ember-view colors-container">
+                                <button id="ember897" class="ember-view colorpicker" style="background-color: #BF1E2E;"></button>
+                                <button id="ember898" class="ember-view colorpicker" style="background-color: #F1592A;"></button>
+                                <button id="ember899" class="ember-view colorpicker" style="background-color: #F7941D;"></button>
+                                <button id="ember900" class="ember-view colorpicker" style="background-color: #9EB83B;"></button>
+                                <button id="ember901" class="ember-view colorpicker" style="background-color: #3AB54A;"></button>
+                                <button id="ember902" class="ember-view colorpicker" style="background-color: #12A89D;"></button>
+                                <button id="ember903" class="ember-view colorpicker" style="background-color: #25AAE2;"></button>
+                                <button id="ember904" class="ember-view colorpicker" style="background-color: #0E76BD;"></button>
+                                <button id="ember905" class="ember-view colorpicker" style="background-color: #652D90;"></button>
+                                <button id="ember906" class="ember-view colorpicker" style="background-color: #92278F;"></button>
+                                <button id="ember907" class="ember-view colorpicker" style="background-color: #ED207B;"></button>
+                                <button id="ember908" class="ember-view colorpicker" style="background-color: #8C6238;"></button>
+                                <button id="ember909" class="ember-view colorpicker" style="background-color: #231F20;"></button>
+                                <button id="ember910" class="ember-view colorpicker" style="background-color: #808281;"></button>
+                                <button id="ember911" class="ember-view colorpicker" style="background-color: #B3B5B4;"></button>
+                                <button id="ember912" class="ember-view colorpicker" style="background-color: #283890;"></button>
+                            </div>
+                        -->
+                        </div>
+                        <div class="input-prepend input-append">
+                            <span class="color-title">Foreground color:</span>
+                            <span class="add-on">#</span>
+                            <input id="new-category-foreground-color" class="ember-view ember-text-field" placeholder="Any web color" maxlength="6" type="text" value="FFFFFF">
+                        <!--
+                            <div id="ember914" class="ember-view colors-container">
+                                <button id="ember915" class="ember-view colorpicker" style="background-color: #FFFFFF;"></button>
+                                <button id="ember916" class="ember-view colorpicker" style="background-color: #000000;"></button>
+                            </div>
+                        -->
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-category-create-submit" class="btn btn-primary" data-bindattr-37="37" data-ember-action="38">Create Category</button>
+            </div>
+        </div>
+    </div>
+    <div id="ember289" class="ember-view">
+    </div>
+</div>
+</script>

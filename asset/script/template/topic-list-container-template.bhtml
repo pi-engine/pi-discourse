@@ -1,0 +1,33 @@
+<script type="text/template" id="topic-list-container-template">
+    <div class="row">
+        <div class="full-width">
+            <div id="list-area">
+                <div class="ember-view">
+                    <div class="contents">
+                        <table id="topic-list">
+                            <thead>
+                                <tr>
+                                    <% if (!disStorage.user.get('isguest')) { %>
+                                        <th>&nbsp;</th>
+                                    <% } %>
+                                    <th>Topic</th>
+                                    <th>Category</th>
+                                    <th>Participants</th>
+                                    <th class="num">Posts</th>
+                                    <th class="num">Likes</th>
+                                    <th class="num">Views</th>
+                                    <th class="num activity" colspan="2">Activity</th>
+                                </tr>
+
+                            </thead>
+                            <tbody class="ember-view" id="topic-list-table">
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    <footer id="topic-list-bottom"></footer>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

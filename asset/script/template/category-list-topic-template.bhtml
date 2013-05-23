@@ -1,0 +1,17 @@
+<script type="text/template" id="category-list-topic-template">
+<tr>
+    <td class="main-link">
+        <div class="topic-inset">
+            <a href="/discourse/t/<%= id %>" class="title"><%= title %></a>
+        </div>
+    </td>
+    <td class="num">
+        <span class="badge-posts">
+            <span class="number"><%= posts_count %></span>
+        </span>
+    </td>
+    <td class="num">
+        <span class="age" title="<%= time_created %>">19h</span>
+    </td>
+</tr>
+</script>

@@ -1,0 +1,80 @@
+<?php
+// Load translation data
+$this->i18nTheme('main');
+/**
+ * $this->css(Pi::url('static/vendor/bootstrap/css/font-awesome.min.css'));
+ * 
+ * conflict with discourse.css
+ */
+$this->css($this->asset('module/discourse', '/css/discourse.css'));
+?>
+<!DOCTYPE HTML>
+<html lang="<?php echo $locale; ?>">
+<head>
+<meta charset="<?php echo $charset; ?>">
+<?php echo $this->headTitle(); ?>
+</head>
+<script type="text/template" id="category-button-template">
+    <a href="/c/<%= id %>" class="badge-category" style="background-color: #<%= color %>; color: #FFFFFF;"><%= name %></a>
+</script>
+<body class="docked">
+<section id="main" class="ember-application">
+<div class="ember-view">
+<header class="ember-view d-header clearfix">
+    <div class="container">
+        <div class="contents clearfix">
+            <div class="title">
+                <a href="/discourse">
+                    <img class="logo-big" src="<?php echo $this->asset('module/discourse', 'image/d-logo-sketch.png');?>" alt="Pi-discourse" id="site-logo">
+                </a>
+            </div>
+            <div class="ember-view extra-info-wrapper">
+                <div class="ember-view extra-info">
+                    <a class="star" href="#" title="add this topic to your favorites list"></a>
+                    <h1>
+                        <div class="ember-view topic-statuses"></div>
+                        <a class="topic-link" href="/t/1">Welcome message area on the home page for anonymous users</a>
+                        <a href="/category/feature" class="badge-category" title="Discussion about features or potential features of Discourse: how they work, why they work, etc." style="background-color: #0E76BD; color: #FFFFFF;">feature</a>
+                    </h1>
+                </div>
+            </div>
+            <div class="panel clearfix">
+                <div class="current-username">
+                    <a href="/users/liquan" data-bindattr-4="4">liquan</a>
+                </div>
+                <ul class="icons clearfix">
+                    <li class="notifications">
+                        <a class="icon" href="#" id="user-notifications" title="notifications of @name mentions, replies to your posts and topics, private messages, etc">
+                            <i class="icon-comment"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="icon expand" href="#" title="search for topics, posts, users, or categories">
+                            <i class="icon-search"></i>
+                        </a>
+                    </li>
+                    <li class="categories dropdown">
+                        <a class="icon" href="#" title="go to another topic list or category">
+                            <i class="icon-reorder"></i>
+                        </a>
+                    </li>
+                    <li class="current-user">
+                        <a class="ember-view icon" href="/users/liquan" title="go to your user page">
+                            <img width="32" height="32" src="https://www.gravatar.com/avatar/7279e8a33fbe1bd97c365b36bc32fcbb.png?s=32&r=pg&d=identicon" class="avatar" title="liquan">
+                        </a>
+                    </li>
+                </ul>
+                <div id="search-dropdown" class="ember-view d-dropdown" style="display: none;"></div>
+                <section class="d-dropdown" id="notifications-dropdown" style="display: none;"></section>
+                <section class="d-dropdown" id="site-map-dropdown" style="display: none;"></section>
+            </div>
+        </div>
+    </div>
+</header>
+<div id="main-outlet">
+<?php if (!empty($content)) echo $content; ?>
+</div>
+</div>
+</section>
+</body>
+</html>

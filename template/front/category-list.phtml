@@ -1,0 +1,11 @@
+<?php
+    $this->jQuery();
+    $this->backbone();
+    $this->js($this->asset('module/discourse', 'script/js/preload_store.js'));
+    $this->js($this->asset('module/discourse', 'script/js/require.js'));
+    $this->js($this->asset('module/discourse', 'script/js/boot.js'));
+    $this->headMeta()->appendName('actionName', $this->actionName);
+?>
+<script type="text/javascript">
+   <?php echo $this->preloadStore;?>
+</script>

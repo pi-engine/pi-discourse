@@ -1,0 +1,3 @@
+<script type="text/template" id="category-button-template">
+    <a href="/c/<%= id %>" class="badge-category" style="background-color: #<%= color %>; color: #FFFFFF;"><%= name %></a>
+</script>

@@ -1,0 +1,102 @@
+<script type="text/template" id="topic-create-template">
+    <!--- class="ember-view processed closed" ---->
+    <!--- class="ember-view processed open edit-title topic show-preview" ---->
+    <div id="reply-control" class="ember-view processed open edit-title topic">
+        <div class="grippie"></div>
+        <div class="spinner">Uploading...</div>
+        <div class="contents">
+            <div id="new-user-education" class="composer-popup" style="display: none; bottom: 400px;">
+                <a href="#" class="close"><i class="icon icon-remove-sign"></i></a>
+            </div>
+            <div id="similar-topics" class="composer-popup" style="display: none; bottom: 400px;">
+                <a href="#" ><i class="icon icon-remove-sign"></i></a>
+                <h3>Your topic is similar to...</h3>
+                <h3><ul class="topics"></ul></h3>
+            </div>
+
+            <div class="control">
+                <a href="#" class="toggler" title="toggle" id="create-topic-toggler"></a>
+                <div class="control-row reply-area">
+                    <div class="reply-to">Create a new Topic:</div>
+                    <div class="form-element clearfix">
+                        <input id="reply-title" class="ember-view ember-text-field span8" placeholder="Type your title here. What is this discussion about in one brief sentence?" maxlength="255" tabindex="2" type="text">
+                        <select id="ember1341" class="ember-view combobox chzn-done" style="display: none;">
+                            <option value="">(no category)</option>
+                            <option value="meta" data-color="B3B5B4" data-text_color="FFFFFF" data-description="Use the 'meta' category to discuss this forum -- things like deciding what sort of topics and replies are appropriate here, what the standards for posts and behavior are, and how we should moderate our community.">meta</option>
+                            <option value="tests" data-color="AB9364" data-text_color="FFFFFF" data-description="null">tests</option>
+                            <option selected="" value="category_01" data-color="25AAE2" data-text_color="FFFFFF" data-description="null">category_01</option>
+                            <option value="pintech" data-color="3AB54A" data-text_color="FFFFFF" data-description="null">pintech</option>
+                            <option value="WOT" data-color="AB9364" data-text_color="FFFFFF" data-description="null">WOT</option>
+                        </select>
+                        <div id="ember1341_chzn" class="chzn-container chzn-container-single" style="width: 220px;">
+                            <a href="javascript:void(0)" class="chzn-single">
+                                <span>category_01</span>
+                                <div><b></b></div>
+                            </a>
+                            <div class="chzn-drop" style="left: -9000px; width: 218px; top: 34px;">
+                                <div class="chzn-search">
+                                    <input type="text" autocomplete="off" style="width: 188px;">
+                                </div>
+                                <ul class="chzn-results">
+                                    <li id="ember1341_chzn_o_0" class="active-result" style="">(no category)</li>
+                                    <li id="ember1341_chzn_o_1" class="active-result" style="">
+                                        <span class="badge-category" style="background-color: #B3B5B4; color: #FFFFFF;" title="Use the 'meta' category to discuss this forum -- things like deciding what sort of topics and replies are appropriate here, what the standards for posts and behavior are, and how we should moderate our community.">meta</span>
+                                    </li>
+                                    <li id="ember1341_chzn_o_2" class="active-result" style="">
+                                        <span class="badge-category" style="background-color: #AB9364; color: #FFFFFF;">tests</span>
+                                    </li>
+                                    <li id="ember1341_chzn_o_3" class="active-result result-selected" style="">
+                                        <span class="badge-category" style="background-color: #25AAE2; color: #FFFFFF;">category_01</span>
+                                    </li>
+                                    <li id="ember1341_chzn_o_4" class="active-result" style="">
+                                        <span class="badge-category" style="background-color: #3AB54A; color: #FFFFFF;">pintech</span>
+                                    </li>
+                                    <li id="ember1341_chzn_o_5" class="active-result" style="">
+                                        <span class="badge-category" style="background-color: #AB9364; color: #FFFFFF;">WOT</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wmd-controls">
+                        <div class="textarea-wrapper">
+                            <div class="wmd-button-bar" id="wmd-button-bar">
+                                <div id="wmd-button-row" class="wmd-button-row">
+                                    <button class="wmd-button" id="wmd-quote-post" title="Blockquote"></button>
+                                    <button class="wmd-button" id="wmd-bold-button" title="Strong &lt;strong&gt; Ctrl+B"></button>
+                                    <button class="wmd-button" id="wmd-italic-button" title="Emphasis &lt;em&gt; Ctrl+I"></button>
+                                    <div class="wmd-spacer" id="wmd-spacer1"></div>
+                                    <button class="wmd-button" id="wmd-link-button" title="Hyperlink &lt;a&gt; Ctrl+L"></button>
+                                    <button class="wmd-button" id="wmd-quote-button" title="Blockquote &lt;blockquote&gt; Ctrl+Q"></button>
+                                    <button class="wmd-button" id="wmd-code-button" title="Code Sample &lt;pre&gt;&lt;code&gt; Ctrl+K"></button>
+                                    <button class="wmd-button" id="wmd-image-button" title="Image &lt;img&gt; Ctrl+G"></button>
+                                    <div class="wmd-spacer" id="wmd-spacer2"></div>
+                                    <button class="wmd-button" id="wmd-olist-button" title="Numbered List &lt;ol&gt; Ctrl+O"></button>
+                                    <button class="wmd-button" id="wmd-ulist-button" title="Bulleted List &lt;ul&gt; Ctrl+U"></button>
+                                    <button class="wmd-button" id="wmd-heading-button" title="Heading &lt;h1&gt;/&lt;h2&gt; Ctrl+H"></button>
+                                    <button class="wmd-button" id="wmd-hr-button" title="Horizontal Rule &lt;hr&gt; Ctrl+R"></button>
+                                    <div class="wmd-spacer" id="wmd-spacer3"></div>
+                                    <button class="wmd-button" id="wmd-undo-button" title="Undo - Ctrl+Z" disabled=""></button>
+                                    <button class="wmd-button" id="wmd-redo-button" title="Redo - Ctrl+Y" disabled=""></button>
+                                </div>
+                            </div>
+                            <textarea id="wmd-input" class="ember-view ember-text-area" placeholder="Type your reply here. Use Markdown or BBCode to format. Drag or paste an image here to upload it." tabindex="3"></textarea>
+                        </div>
+                        <div class="preview-wrapper">
+                            <div id="wmd-preview" class=""></div>
+                        </div>
+                        <a href="#" class="toggle-preview">« hide preview</a>
+                        <div class="saving-draft"></div>
+                    </div>
+                    <div class="submit-panel">
+                        <!--
+                        <button tabindex="4" disabled="disabled" class="btn btn-primary create">Create Topic</button>
+                        -->
+                        <button id="btn-topic-create-submit" tabindex="4" class="btn btn-primary create">Create Topic</button>
+                        <a style="cursor:pointer" id="submit_cancel" class="cancel" tabindex="4">cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
