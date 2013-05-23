@@ -23,9 +23,13 @@ define({
 
     User: Backbone.Model.extend({
         initialize: function(user){
-            if(!user.name) {
+//            console.log(user);
+            if('undefined' === typeof user.name || '' === typeof user.name ) {
                 user.name = 'Anonymous';
             }
+//            if(!user.name) {
+//                user.name = 'Anonymous';
+//            }
         },
         defaults: {
         }

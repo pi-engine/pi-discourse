@@ -3,6 +3,7 @@
 
 namespace Module\Discourse\Controller\Front;
 
+use Pi;
 use Module\Discourse\Lib\FrontController;
 //use Module\Discourse\Controller\Front\CategoryController as CC;
 
@@ -26,8 +27,6 @@ class ClientCategoryController extends FrontController
         
         $this->view()->assign('actionName', str_replace('Action', '', __FUNCTION__));
         $this->view()->assign('preloadStore', $this->preloadStore);
-        $this->view()->setTemplate('category');   
+        $this->view()->setTemplate('category');
     }
-    
-    
 }
