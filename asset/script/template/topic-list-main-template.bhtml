@@ -1,0 +1,21 @@
+<script type="text/template" id="topic-list-main-template">
+<div class="ember-view">
+    <div id="list-controls">
+        <div class="container">
+            <ul class="nav nav-pills" id="category-filter">
+                <li class="ember-view" id="topic-filter-latest" title="the most recent topics">
+                    <a href="/discourse/latest">Latest</a>
+                </li>
+                <li class="ember-view" id="topic-filter-category" title="the most recent topics">
+                    <a href="/discourse/c">Cagetories</a>
+                </li>
+            </ul>
+            <button class="btn btn-default" id="btn-create-new-topic">
+                <i class="icon icon-plus"></i>Create Topic
+            </button>
+        </div>
+    </div>
+    <div class="container" id="d-container">
+    </div>
+</div>
+</script>

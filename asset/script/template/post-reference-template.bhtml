@@ -1,0 +1,28 @@
+<script type="text/template" id="post-reference-template">
+<section class="embedded-posts top parent-post span14 offset2" style="">
+    <div id="ember10909" class="ember-view reply">
+        <div class="row">
+            <div class="topic-meta-data span2">
+                <div class="contents">
+                    <div>
+                        <a href="/discourse/u/<%= user_id %>"">
+                        <img width="25" height="25" src="https://www.gravatar.com/avatar/<%= userInfo.get('avatar') %>.png?s=25&amp;r=pg&amp;d=identicon" class="avatar " title="<%= userInfo.get('name') %>"></a>
+                    </div>
+                    <h5>
+                        <a href="/discourse/u/<%= user_id %>""><%= userInfo.get('name') %></a>
+                    </h5>
+                    <span class="post-date">
+                        <span class="date" title="<%= time_created %>"><%= time_from_created %></span>
+                    </span>
+                </div>
+            </div>
+            <div class="span11 topic-body">
+                <a href="/discourse/t/<%= topic_id %>#" class="arrow" title="jump to earlier reply">
+                    <i class="icon icon-arrow-up"></i>
+                </a>
+                <%= raw %>
+            </div>
+        </div>
+    </div>
+</section>
+</script>

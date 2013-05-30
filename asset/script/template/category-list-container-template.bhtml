@@ -1,0 +1,17 @@
+<script type="text/template" id="category-list-container-template">
+    <div class="row">
+        <div class="full-width">
+            <div id="list-area">
+                <div class="ember-view">
+                    <section class="category-column first">
+                        <div id="category_container_first"></div>
+                    </section>
+                    <section class="category-column">
+                        <div id="category_container"></div>
+                    </section>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

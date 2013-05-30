@@ -1,0 +1,30 @@
+<script type="text/template" id="category-list-template">
+    <div class="ember-view category-list-item">
+        <table id="topic-list">
+            <tbody id="category_topic_table_<%= id %>">
+                <tr>
+                    <th>
+                        <a href="/discourse/c/<%= id %>" class="badge-category" title="<%= slug %>" style="background-color: #<%= color %>; color: #FFFFFF;"><%= name %></a>
+                    </th>
+                    <th class="num">Posts</th>
+                    <th class="num">Age</th>
+                </tr>
+            </tbody>
+        </table>
+        <footer class="clearfix">
+            <figure title="topics posted in the last 365 days">
+                <span class="number" title="128">128</span>
+                <figcaption>year</figcaption>
+            </figure>
+            <figure title="topics posted in the last 30 days">
+                <span class="number" title="44">44</span>
+                <figcaption>month</figcaption>
+            </figure>
+            <figure title="topics posted in the last 7 days">
+                <span class="number" title="15">15</span>
+                <figcaption>week</figcaption>
+            </figure>
+            <a href="/category/support" class="btn btn-small">view all 133...</a>
+        </footer>
+    </div>
+</script>
