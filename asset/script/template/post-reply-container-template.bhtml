@@ -1,0 +1,5 @@
+<script type="text/template" id="post-reply-container-template">
+<section id="post-<%= id %>-reply-container" class="ember-view replies-list embedded-posts bottom" style="display: block;">
+
+</section>
+</script>

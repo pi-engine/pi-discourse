@@ -1,0 +1,96 @@
+<script type="text/template" id="topic-main-template">
+<div class="ember-view regular">
+    <div id="topic-title">
+        <div class="container">
+            <div class="inner">
+                <a class="star" href="#" title="add this topic to your favorites list"></a>
+                <h1>
+                    <a href="/t/replay-as-topic/6"><%= title %></a>
+                    <a href="#" class="edit-topic" title="edit the title and category of this topic">
+                        <i class="icon-pencil"></i>
+                    </a>
+                </h1>
+            </div>
+        </div>
+    </div>
+    <div class="container posts">
+        <div id="selected-posts" class="ember-view hidden"></div>
+        <div class="row">
+            <section class="topic-area" id="topic">
+                <div class="posts-wrapper">
+<!--- 
+                    <div id="topic-progress-wrapper">
+                        <nav id="topic-progress" title="topic progress">
+                            <button id="jump-top" title="jump to first post" disabled="disabled">
+                                <i class="icon-circle-arrow-up"></i>
+                            </button>
+                            <div class="nums">
+                                <h4 title="current post">1</h4>
+                                <span>of</span>
+                                <h4 title="current post">3</h4>
+                            </div>
+                            <button id="jump-bottom" title="jump to last post">
+                                <i class="icon-circle-arrow-down"></i>
+                            </button>
+                            <div class="bg" style="border-right-width: 1px; width: 43.33333333333333px;">&nbsp;</div>
+                        </nav>
+                    </div>
+-->
+                    <div class="ember-view" id="post-row-container">
+                    </div>
+
+                </div>
+                <div id="topic-footer-buttons" class="ember-view">
+                    <button class="ember-view btn standard" title="send invitations to friends so they can reply to this topic with a single click">
+                        <i class="icon icon-group"></i>Invite Friends to Reply
+                    </button>
+                    <button class="ember-view btn standard" title="add this topic to your favorites list">
+                        <i class="icon-star undefined"></i>Favorite
+                    </button>
+                    <button class="ember-view btn standard" title="share a link to this topic">
+                        <i class="icon icon-share"></i>Share
+                    </button>
+                    <button class="ember-view btn standard hidden" title="Clear the pinned status of this topic so it no longer appears at the top of your topic list">
+                        <i class="icon icon-pushpin"></i>Clear pin
+                    </button>
+                    <button id="btn-reply-to-topic" class="ember-view btn btn-primary create standard" title="begin composing a reply to this topic">
+                        <i class="icon icon-plus"></i>Reply
+                    </button>
+                    <div class="ember-view btn-group">
+                        <h4 class="title"></h4>
+                        <button class="btn standard dropdown-toggle">Regular<span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li data-id="3">
+                                <a href="#">
+                                    <span class="title">Watching</span>
+                                    <span>same as Tracking, plus you will be notified of all new posts.</span>
+                                </a>
+                            </li>
+                            <li data-id="2">
+                                <a href="#">
+                                    <span class="title">Tracking</span>
+                                    <span>you will be notified of unread posts, @name mentions, and replies to your posts.</span>
+                                </a>
+                            </li>
+                            <li data-id="1">
+                                <a href="#">
+                                    <span class="title">Regular</span>
+                                    <span>you will be notified only if someone mentions your @name or replies to your post.</span>
+                                </a>
+                            </li>
+                            <li data-id="0">
+                                <a href="#">
+                                    <span class="title">Muted</span>
+                                    <span>you will not be notified of anything about this topic, and it will not appear on your unread tab.</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <p>You will be notified only if someone mentions your @name or replies to your post.</p>
+                    </div>
+                </div>
+                <!--<div id="suggested-topics"></div>-->
+            </section>
+        </div>
+    </div>
+</div>
+</script>

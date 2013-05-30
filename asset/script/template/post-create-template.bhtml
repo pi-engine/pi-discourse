@@ -1,0 +1,30 @@
+<script type="text/template" id="post-create-template">
+    <!--- class="ember-view processed closed" ---->
+    <!--- class="ember-view processed open show-preview" ---->  
+    <div id="reply-control" class="ember-view processed open show-preview" style="height: 363px;">
+        <div class="grippie"></div>
+        <div class="spinner">Uploading...</div>
+        <div class="contents">
+            <div class="control">
+                <a href="#" class="toggler" title="toggle" id="create-post-toggler"></a>
+                <div class="control-row reply-area">
+                    <% if (typeof title === 'undefined') { %>
+                        <div class="reply-to">Replying to <a href="/discourse/t/<%= topic_id %>/<%= post_number %>">post <%= post_number %></a> by <img width="20" height="20" src="https://www.gravatar.com/avatar/<%= userInfo.get('avatar') %>.png?s=20&r=pg&d=identicon" class="avatar " title=""> <%= userInfo.get('name') %>:</div>
+                    <% } else { %>
+                        <div class="reply-to">Replying to <a href="/discourse/t/<%= topic_id %>"> <%= title %></a>:</div>
+                    <% } %>
+                    <div class="textarea-wrapper">
+                        <textarea id="editor2" class="ckeditor ember-view ember-text-area" placeholder="Type your reply here. Use Markdown or BBCode to format. Drag or paste an image here to upload it." tabindex="3"></textarea>
+                    </div>
+                    <div class="submit-panel">
+                        <!--
+                        <button tabindex="4" disabled="disabled" class="btn btn-primary create">Reply</button>
+                        -->
+                        <button tabindex="4" id="btn-post-create-submit" class="btn btn-primary create">Reply</button>
+                        <a style="cursor:pointer" id="submit_cancel" class="cancel" tabindex="4">cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
