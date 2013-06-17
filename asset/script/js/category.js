@@ -123,7 +123,6 @@ define(["dis"], function(dis){
                     success: function(data){
                         data = JSON.parse(data);
                         if(!data.err_msg){
-                            console.log(data);
                             disStorage.topics.get(data.topic_id).set('starred', data.starred);
                             disStorage.topics.get(data.topic_id).get('starred');
                         } else {
@@ -189,9 +188,28 @@ define(["dis"], function(dis){
             }
         }),
         
+        more: function() {
+            console.log('request data');
+            $.ajax({
+                url: '/discourse/category/' + disStorage.currentCategory.get('id') + '/' + (window.action.page * 20) + '/20',
+                type: 'GET',
+                async: false,
+                success: function(data){
+                    data = JSON.parse(data);
+                    
+                    _.each(data, function(topic){
+                        var currentTopic = new dis.Topic(topic);
+                        disStorage.topics.add(currentTopic);
+                        var topicListTableRowView = new action.TopicListTableRowView({ model: currentTopic });
+                    });
+                    
+                    window.action.page++;
+                }
+            });
+        },
+        
         run: function(id){
             console.log('running category.js');
-//            console.log(id);
             require([
                 "text!../template/topic-list-container-template.bhtml", 
                 "text!../template/topic-list-table-row-template.bhtml",
@@ -244,27 +262,6 @@ define(["dis"], function(dis){
                         window.action.more();
                     }
                 });
-            });
-        },
-        
-        more: function() {
-            console.log('request data');
-            $.ajax({
-                url: '/discourse/category/' + disStorage.currentCategory.get('id') + '/' + (window.action.page * 20) + '/20',
-                type: 'GET',
-                async: false,
-                success: function(data){
-                    data = JSON.parse(data);
-                    console.log(data);
-                    
-                    _.each(data, function(topic){
-                        var currentTopic = new dis.Topic(topic);
-                        disStorage.topics.add(currentTopic);
-                        var topicListTableRowView = new action.TopicListTableRowView({ model: currentTopic });
-                    });
-                    
-                    window.action.page++;
-                }
             });
         }
     };

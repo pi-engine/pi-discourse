@@ -174,7 +174,6 @@ define(["dis"], function(dis, templates){
                         async: false,
                         success: function(data){
                             data = JSON.parse(data);
-                            console.log(data);
                             disStorage.categoryTopics = data;
                         }
                     });

@@ -13,15 +13,18 @@ class User extends AbstractApi
     {
         $userData = $piAccountInfo->account;
         $data = array( 
-                    'id'        => $userData->id,
-                    'username'  => $userData->identity,
-                    'email'     => $userData->email,
-                    'name'      => $userData->name,
-                    'avatar'    => md5( strtolower( trim( $userData->email ) ) ),
+                    'id'            => $userData->id,
+                    'username'      => $userData->identity,
+                    'email'         => $userData->email,
+                    'name'          => $userData->name,
+                    'avatar'        => md5( strtolower( trim( $userData->email ) ) ),
+                    'time_created'  => time(),
+                    'time_updated'  => time(),
                 );
-        $row = \Pi::model('user', 'discourse')->createRow($data);
-        $row->save();
-        if (!$row->time_updated) {
+        $userModel = \Pi::model('user', 'discourse');
+        $row = $userModel->createRow($data)->save();
+        $userRow = $userModel->find(intval($userData->id));
+        if(!$userRow->id) {
             return false;
         } else {
             return true;
@@ -48,9 +51,11 @@ class User extends AbstractApi
             $piAccountInfo = Pi::registry('user');
             $piAccountId = $piAccountInfo->account->id;
             $userData = $this->getUserInfo($piAccountId);
+            
             if(!$userData) {
                 if($this->initAccount($piAccountInfo)) {
                     $userData = $this->getUserInfo($piAccountId);
+                    
                 } else {
                     return 'account initial failed';
                 }
@@ -99,6 +104,7 @@ class User extends AbstractApi
                         'username'  => $userData['username'],
                         'email'     => $userData['email'],
                         'name'      => $userData['name'],
+                        'avatar'    => $userData['avatar'],
                         'isguest'   => false,
                     );
             return $result;

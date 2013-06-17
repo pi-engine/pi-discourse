@@ -1,5 +1,6 @@
 /* << replace >>*/
 
+pjax = 0;
 var scripts = document.getElementsByTagName("script");
 
 //config requirejs
@@ -29,7 +30,7 @@ require(["dis"], function(dis) {
         categories.add(new dis.Category(category));
     });
     
-    if(1) {
+    if(pjax) {
         //enable pjax
         var dis_router = new dis.Router;
 
@@ -63,15 +64,47 @@ require(["dis"], function(dis) {
             }
         });
     }
-});
+    
+    //load current page script file
+    var actionName = $("meta[name=actionName]").attr('content');
 
+    require([
+        'dis',
+        actionName,
+        "text!../template/main-header-template.bhtml"
+    ], function(dis, action, header_template) {
+        disStorage.templates.mainHeaderTemplate = $(header_template).html();
 
+        MainHeaderView = Backbone.View.extend({
+            el: $("#main-header"),
 
-//load current page script file
-var actionName = $("meta[name=actionName]").attr('content');
+            events: {
+            },
 
-require(['dis', actionName], function(dis) {
-    window.action = require(actionName);
-    window.action.run();
-//    Backbone.history.start({ pushState: true, root: dis.app.root });
+            initialize: function(){
+                this.render();
+            },
+
+            render: function(){
+                variables = this.prepareVariables();
+                var template = _.template( disStorage.templates.mainHeaderTemplate, variables );
+                this.$el.append( template );
+            },
+
+            prepareVariables: function(){
+                return {
+                    user:           disStorage.user,
+                    all_categories: disStorage.categories
+                };
+            }
+        });
+        
+        var mainHeaderView = new MainHeaderView();
+        
+        
+        
+        window.action = action;
+        window.action.run();
+    //    Backbone.history.start({ pushState: true, root: dis.app.root });
+    });
 });
