@@ -349,7 +349,7 @@ define(["dis"], function(dis){
             }
         }),
         
-        run: function(){
+        run: function(id){
             console.log('running post.js');
             
             require([
@@ -361,24 +361,60 @@ define(["dis"], function(dis){
                 "text!../template/post-reference-template.bhtml"
             ], 
             function(template1, template2, template3, template4, template5, template6 ){
+                /**
+                 * prepare templates
+                 */
                 disStorage.templates.topicMainTemplate          = $(template1).html();
                 disStorage.templates.postRowTemplate            = $(template2).html();
                 disStorage.templates.postCreateTemplate         = $(template3).html();
                 disStorage.templates.postReplyContainerTemplate = $(template4).html();
                 disStorage.templates.postReplyRowTemplate       = $(template5).html();
                 disStorage.templates.postReferenceTemplate      = $(template6).html();
+                
+                /**
+                 * prepare data
+                 */
+                if (PreloadStore.data) {
+                    disStorage.currentTopic = new dis.Topic(PreloadStore.data.topic);
+                    disStorage.posts        = new dis.Posts;
 
-                disStorage.currentTopic = new dis.Topic(PreloadStore.data.topic);
-                disStorage.posts        = new dis.Posts;
+                    _.each(PreloadStore.data.postsAndUsers.users, function(user){
+                        disStorage.users.add(new dis.User(user));
+                    });
+                    _.each(PreloadStore.data.postsAndUsers.posts, function(post){
+                        disStorage.posts.add(new dis.Post(post));
+                    });
+                    PreloadStore.data = null;
+                } else {
+                    console.log('request for data');
+                    $.ajax({
+                        url: '/discourse/t/' + id + '.json',
+                        type: 'GET',
+                        async: false,
+                        success: function(data){
+                            data = JSON.parse(data);
+//                            console.log(data);
+                            
+                            disStorage.currentTopic = new dis.Topic(data.topic);
+                            if ("undefined" === typeof disStorage.posts) {
+                                disStorage.posts = new dis.Posts;
+                            } else {
+                                disStorage.posts.reset();
+                            }
+                            _.each(data.postsAndUsers.users, function(user){
+                                disStorage.users.add(new dis.User(user));
+                            });
+                            _.each(data.postsAndUsers.posts, function(post){
+                                disStorage.posts.add(new dis.Post(post));
+                            });
+                        }
+                    });
+                }
                 
-                _.each(PreloadStore.data.postsAndUsers.users, function(user){
-                    disStorage.users.add(new dis.User(user));
-                });
-                _.each(PreloadStore.data.postsAndUsers.posts, function(post){
-                    disStorage.posts.add(new dis.Post(post));
-                });
-                PreloadStore.data = null;
-                
+                /**
+                 * render
+                 */
+                $("#main-outlet").empty();
                 new action.TopicMainView();
             });
         }

@@ -165,13 +165,22 @@ define(["dis"], function(dis, templates){
                 
                 if(PreloadStore.data) {
                     disStorage.categoryTopics = PreloadStore.data.categoryTopics;
+                    PreloadStore.data = null;
                 } else {
-                    console.log('need to request for data');
+                    console.log('request for data');
+                    $.ajax({
+                        url: '/discourse/c.json',
+                        type: 'GET',
+                        async: false,
+                        success: function(data){
+                            data = JSON.parse(data);
+                            console.log(data);
+                            disStorage.categoryTopics = data;
+                        }
+                    });
                 }
                 
-                PreloadStore.data = null;
-                
-                $("#d-container").empty();
+                $("#main-outlet").empty();
                 var categoryListMainView = new action.CategoryListMainView();
             });
         },

@@ -189,9 +189,9 @@ define(["dis"], function(dis){
             }
         }),
         
-        run: function(){
+        run: function(id){
             console.log('running category.js');
-            
+//            console.log(id);
             require([
                 "text!../template/topic-list-container-template.bhtml", 
                 "text!../template/topic-list-table-row-template.bhtml",
@@ -211,14 +211,27 @@ define(["dis"], function(dis){
                         var currentTopic = new dis.Topic(topic);
                         disStorage.topics.add(currentTopic);
                     });
+                    PreloadStore.data = null;
                 } else {
-                    console.log('need to request for data');
+                    console.log('request for data');
+                    $.ajax({
+                        url: '/discourse/c/' + id + '.json',
+                        type: 'GET',
+                        async: false,
+                        success: function(data){
+                            data = JSON.parse(data);
+                            disStorage.topics.reset();
+                            _.each(data, function(topic){
+                                var currentTopic = new dis.Topic(topic);
+                                disStorage.topics.add(currentTopic);
+                            });
+                        }
+                    });
                 }
-                PreloadStore.data = null;
                 
                 disStorage.currentCategory = disStorage.categories.get(disStorage.topics.models[0].get('category_id'));
                 
-                $("#d-container").empty();
+                $("#main-outlet").empty();
 
                 var topicListMainView = new action.TopicListMainView();
                 

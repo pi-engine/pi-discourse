@@ -72,10 +72,19 @@ class DiscourseRoute extends Standard
                 $matches['action']      = 'register';
             } else if ('c' === $first) {
                 if($second) {
-                    $matches['id']      = is_numeric($params[1]) ? $params[1] : null;
-                    if($matches['id']) {
+                    if(is_numeric($second)) {
+                        $matches['id']          = is_numeric($second) ? $second : null;
                         $matches['controller']  = 'clientCategory';
                         $matches['action']      = 'category';
+                    } else if(strpos($second, ".json")) {
+                        $c_id = str_replace(".json", "", $second);
+                        if(is_numeric($c_id)) {
+                            $matches['id']          = $c_id;
+                            $matches['controller']  = 'clientCategory';
+                            $matches['action']      = 'categoryJson';
+                        } else {
+                            return null;
+                        }
                     } else {
                         return null;
                     }
@@ -85,16 +94,40 @@ class DiscourseRoute extends Standard
                 }
             } else if ('t' === $first) {
                 if($second) {
-                    $matches['id']      = is_numeric($params[1]) ? $params[1] : null;
-                    if($matches['id']) {
+                    if(is_numeric($second)) {
+                        $matches['id']          = is_numeric($second) ? $second : null;
                         $matches['controller']  = 'clientTopic';
                         $matches['action']      = 'topic';
+                    } else if(strpos($second, ".json")) {
+                        $c_id = str_replace(".json", "", $second);
+                        if(is_numeric($c_id)) {
+                            $matches['id']          = $c_id;
+                            $matches['controller']  = 'clientTopic';
+                            $matches['action']      = 'topicJson';
+                        } else {
+                            return null;
+                        }
                     } else {
                         return null;
                     }
                 } else {
                     return null;
                 }
+                
+//                if($second) {
+//                    $matches['id']      = is_numeric($params[1]) ? $params[1] : null;
+//                    if($matches['id']) {
+//                        $matches['controller']  = 'clientTopic';
+//                        $matches['action']      = 'topic';
+//                    } else {
+//                        return null;
+//                    }
+//                } else {
+//                    return null;
+//                }
+            } else if ('c.json' === $first) {
+                $matches['controller']  = 'clientCategory';
+                $matches['action']      = 'categoryListJson';
             } else {
                 return null;
             }

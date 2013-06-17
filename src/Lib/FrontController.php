@@ -17,15 +17,6 @@ class FrontController extends ActionController
     
     public $userInfo;
     
-    // category controller
-    public $cc;
-    
-    // user controller 
-    public $uc;
-    
-    // topic controller
-    public $tc;
-    
     public function __construct() {
         $this->preStoreData();
         Pi::service('theme')->setTheme('discourse');
@@ -41,35 +32,12 @@ class FrontController extends ActionController
     
     public function preStoreData()
     {
-        $this->categories = $this->cc()->allCategories();
-        
-        $this->userInfo = $this->uc()->getCurrentUserInfo();
-                
+//        $this->categories = $this->cc()->allCategories();
+//        $this->userInfo = $this->uc()->getCurrentUserInfo();
+        $this->categories   = Pi::service('api')->discourse(array('category', 'allCategories'));
+        $this->userInfo     = Pi::service('api')->discourse(array('user', 'getCurrentUserInfo'));
+  
         $this->preStore('user', $this->userInfo);
         $this->preStore('categories', $this->categories);
-    }
-    
-    public function uc()
-    {
-        if (!isset($this->uc)) {
-            $this->uc = new UserController();
-        }
-        return $this->uc;
-    }
-    
-    public function cc()
-    {
-        if (!isset($this->cc)) {
-            $this->cc = new CategoryController();
-        }
-        return $this->cc;
-    }
-    
-    public function tc()
-    {
-        if (!isset($this->tc)) {
-            $this->tc = new TopicController();
-        }
-        return $this->tc;
     }
 }

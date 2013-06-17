@@ -3,6 +3,7 @@
 
 namespace Module\Discourse\Controller\Front;
 
+use Pi;
 use Module\Discourse\Lib\FrontController;
 
 
@@ -11,8 +12,9 @@ class ClientTopicController extends FrontController
     public function topicAction()
     {
         $id = $this->params('id');
-        $topic = $this->tc()->getTopic($id);
-        $postsAndUsers = $this->tc()->getPosts($id);
+        $topic          = Pi::service('api')->discourse(array('topic', 'getTopic'), $id);
+        $postsAndUsers  = Pi::service('api')->discourse(array('topic', 'getPosts'), $id);
+
         $this->preStore('topic', $topic);
         $this->preStore('postsAndUsers', $postsAndUsers);
         
@@ -22,8 +24,16 @@ class ClientTopicController extends FrontController
         $this->view()->setTemplate('topic');
     }
     
-    public function topicAjax()
+    public function topicJsonAction()
     {
-        
+        $id = $this->params('id');
+        $topic          = Pi::service('api')->discourse(array('topic', 'getTopic'), $id);
+        $postsAndUsers  = Pi::service('api')->discourse(array('topic', 'getPosts'), $id);
+
+        echo json_encode(array(
+            'topic' => $topic, 
+            'postsAndUsers' => $postsAndUsers
+        ));
+        exit();
     }
 }

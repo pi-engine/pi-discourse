@@ -5,7 +5,6 @@ namespace Module\Discourse\Controller\Front;
 
 use Pi;
 use Module\Discourse\Lib\DiscourseRestfulController;
-use Module\Discourse\Controller\Front\UserController as UC;
 
 /**
  * 

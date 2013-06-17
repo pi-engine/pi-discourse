@@ -24,7 +24,7 @@ define({
     User: Backbone.Model.extend({
         initialize: function(user){
 //            console.log(user);
-            if('undefined' === typeof user.name || '' === typeof user.name ) {
+            if('undefined' === typeof user.name) {
                 user.name = 'Anonymous';
             }
 //            if(!user.name) {
@@ -78,24 +78,29 @@ define({
         },
         categoryList: function(){
             console.log( "Going to category list" );
-            $("#category-filter").children('.active').removeClass('active');
-            $("#topic-filter-category").addClass('active');
+//            $("#category-filter").children('.active').removeClass('active');
+//            $("#topic-filter-category").addClass('active');
             require(["categoryList"], function(action) {
-//                action.ajaxRun();
+                window.action = action;
+                window.action.run();
             });
         },
         category: function(id){
-            $("#category-filter").children('.active').removeClass('active');
+            console.log( "Going to category " + id );
+//            $("#category-filter").children('.active').removeClass('active');
             require(["category"], function(action) {
                 window.action = action;
-                window.action.ajaxRun(id);
+                window.action.run(id);
             });
-
-
         },
         topic: function(id){
             // Note the variable in the route definition being passed in here
             console.log( "Going to topic " + id );
+            
+            require(["topic"], function(action) {
+                window.action = action;
+                window.action.run(id);
+            });
         },
         defaultRoute: function(url) {
             // just url argument and parse params out
