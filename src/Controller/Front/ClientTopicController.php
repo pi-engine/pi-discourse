@@ -30,10 +30,9 @@ class ClientTopicController extends FrontController
         $topic          = Pi::service('api')->discourse(array('topic', 'getTopic'), $id);
         $postsAndUsers  = Pi::service('api')->discourse(array('topic', 'getPosts'), $id);
 
-        echo json_encode(array(
+        return json_encode(array(
             'topic' => $topic, 
             'postsAndUsers' => $postsAndUsers
         ));
-        exit();
     }
 }

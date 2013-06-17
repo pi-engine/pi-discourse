@@ -63,7 +63,6 @@ define({
                 color:          categoryModel.get("color"),
                 slug:           categoryModel.get("slug")
             };
-//            variables = {id:1,name:"category",color:"333333",slug:""};
             var template = _.template( $("#category-button-template").html(), variables );
             this.$el.append( template );
         }

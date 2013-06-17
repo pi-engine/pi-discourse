@@ -5,7 +5,6 @@ namespace Module\Discourse\Controller\Front;
 
 use Pi;
 use Module\Discourse\Lib\FrontController;
-//use Module\Discourse\Controller\Front\CategoryController as CC;
 
 class ClientCategoryController extends FrontController
 {
@@ -34,22 +33,14 @@ class ClientCategoryController extends FrontController
     {
         $id = $this->params('id');
         $topics = Pi::service('api')->discourse(array('category', 'getTopics'), $id);
-        
-//        d($id);
-//        d($topics);
-        
-        echo json_encode($topics);
-        exit();
-        
-//        return json_encode($topics);
-//        var_dump($topics);
+
+        return json_encode($topics);
     }
     
     public function categoryListJsonAction()
     {
         $topics = Pi::service('api')->discourse(array('category', 'allTopTopics'), $this->categories);
-      
-        echo json_encode($topics);
-        exit();
+
+        return json_encode($topics);
     }
 }

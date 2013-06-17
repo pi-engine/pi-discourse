@@ -24,6 +24,13 @@ abstract class DiscourseRestfulController extends ActionController
     protected $eventIdentifier = __CLASS__;
 
     /**
+     * Set theme to discourse
+     */
+    public function __construct() {
+        Pi::service('theme')->setTheme('discourse');
+    }
+    
+    /**
      * Return list of resources
      *
      * @return mixed
