@@ -7,3 +7,6 @@ In `template/`, folder `discourse/` is a theme of pi-discourse, it shouldn't be 
 
 Before using pi-discour module, user should cut `usr/module/discourse/template/discourse/` to `theme/discourse` and install discourse theme(install, not use).
 
+You can switch pjax on or off by changing line 3 in `/asset/script/js/boot.js`,
+on: `pjax = 1;` 
+off: `pjax = 0;`
