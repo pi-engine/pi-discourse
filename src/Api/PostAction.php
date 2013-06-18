@@ -9,9 +9,14 @@ use Pi\Db\RowGateway\RowGateway;
 
 class PostAction extends AbstractApi
 {
-    public function handleAction($data)
+    const POST_ACTION_BOOKMARK  = 1;
+    
+    const POST_ACTION_LIKE      = 2;
+    
+    public function handle($data)
     {
         $postModel          = \Pi::model('post', 'discourse');
+        $topicModel         = \Pi::model('topic', 'discourse');
         $postActionModel    = \Pi::model('post_action', 'discourse');
         
         $userData = Pi::service('api')->discourse(array('user', 'getCurrentUserInfo'));
@@ -50,18 +55,50 @@ class PostAction extends AbstractApi
             );
             
             if ($postActionRow) {
-                return 'already true';
+                return array(
+                    'post'          => $postModel->find(intval($data['post_id']))->toArray(),
+                    'postAction'    => $postActionRow->toArray(),
+                );
             } else {
                 $postActionRow = $postActionModel->createRow($postActionData);
                 $postActionRow->save();
-                return 'success';
+                if (intval($data['post_action_type_id']) == static::POST_ACTION_LIKE) {
+                    $postModel->update(array(
+                        'like_count' => new \Zend\Db\Sql\Expression('`like_count` + 1')
+                    ), array('id' => intval($data['post_id'])));
+                    $topicModel->update(array(
+                        'like_count' => new \Zend\Db\Sql\Expression('`like_count` + 1')
+                    ), array('id' => intval($postRow->topic_id)));
+                }
+                return array(
+                    'post'          => $postModel->find(intval($data['post_id']))->toArray(),
+                    'postAction'    => $postActionRow->toArray(),
+                );
             }
         } else {
             if ($postActionRow) {
                 $postActionRow->delete();
-                return 'deleted';
+                if (intval($data['post_action_type_id']) == static::POST_ACTION_LIKE) {
+                    $postModel->update(array(
+                        'like_count' => new \Zend\Db\Sql\Expression('`like_count` - 1')
+                    ), array('id' => intval($data['post_id'])));
+                    $topicModel->update(array(
+                        'like_count' => new \Zend\Db\Sql\Expression('`like_count` - 1')
+                    ), array('id' => intval($postRow->topic_id)));
+                }
+                return array(
+                    'post'          => $postModel->find(intval($data['post_id']))->toArray(),
+                    'postAction'    => array(
+                        'post_id' => intval($data['post_id']),
+                    )
+                );
             } else {
-                return 'success';
+                return array(
+                    'post'          => $postModel->find(intval($data['post_id']))->toArray(),
+                    'postAction'    => array(
+                        'post_id' => intval($data['post_id']),
+                    )
+                );
             }
         }
     }

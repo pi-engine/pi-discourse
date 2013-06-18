@@ -183,6 +183,7 @@ CREATE TABLE `{post_action}` (
     `time_created`              INT UNSIGNED        NOT NULL,                   # `created_at` 
     `time_updated`              INT UNSIGNED        NOT NULL,                   # `updated_at`
     PRIMARY KEY (`id`),
+    KEY (`post_id`, `user_id`, `post_action_type_id`),
     KEY (`post_id`),
     KEY (`user_id`),
     KEY (`post_action_type_id`),

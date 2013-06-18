@@ -32,11 +32,11 @@
                             <%= raw %>
                         </div>
                         <section class="ember-view post-menu-area clearfix">
-                            <% if(reply_count > 0) { %>
+                            <% if (reply_count > 0) { %>
                                 <button id="post-<%= id %>-reply-toggler" class="show-replies" value="<%= id %>"><span class="badge-posts"><%= reply_count %></span>Replies<i class="icon icon-chevron-down"></i></button>
                             <% } %>
                             <nav class="post-controls">
-                                <button title="like this post" class="like">
+                                <button id="btn-like-<%= id %>" value="<%= id %>" style="display:<% if (typeof is_liked !== 'undefined') { %>none<% } else { %>inline<% } %>" title="like this post" class="like">
                                     <i class="icon-heart"></i>
                                 </button>
                                 <button title="flag this post for attention or send a notification about it">
@@ -45,8 +45,12 @@
                                 <button title="share a link to this post">
                                     <i class="icon-link"></i>
                                 </button>
-                                <button title="bookmark this post to your user page">
-                                    <i class="icon-bookmark-empty"></i>
+                                <button id="btn-bookmark-<%= id %>" value="<%= id %>" title="bookmark this post to your user page">
+                                    <% if (typeof is_bookmarked === 'undefined') { %>
+                                        <i class="icon-bookmark-empty"></i>
+                                    <% } else { %>
+                                        <i class="icon-bookmark"></i>
+                                    <% } %>
                                 </button>
                                 <button id="reply-to-post-<%= id %>" value="<%= id %>" title="begin composing a reply to this post">
                                     <i class="icon-reply"></i> Reply
@@ -55,9 +59,9 @@
                         </section>
                     </div>
                     <section class="ember-view post-actions">
-                        <div class="post-action">
-                            <a href="#"><%= like_count %> people liked this</a>.
-                            <a href="#">Like it too</a>.
+                        <div id="like-status-<%= id %>" value="<%= id %>" style="display:<% if (like_count <= 0 ) { %>none<% } else { %>inline<% } %>" class="post-action">
+                            <a id="post-like-toggler-<%= id %>" value="<%= id %>" style="cursor:pointer"><span id="post-like-count-<%= id %>"><%= like_count %></span> people liked this.</a>
+                            <a id="post-unlike-<%= id %>" value="<%= id %>" style="cursor:pointer;display:<% if (typeof is_liked === 'undefined') { %>none<% } else { %>inline<% } %>" >Undo like.</a>
                         </div>
                     </section>
                     <!--<div class="ember-view topic-summary"></div>-->

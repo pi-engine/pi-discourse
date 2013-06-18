@@ -47,14 +47,16 @@ define(["dis"], function(dis){
             initialize: function(){
                 this.$el = $("#post-row-container"),
                 this.render();
-                $("#reply-to-post-" + this.model.id).bind("click", this.showReplyWindow);
-                $("#post-" + this.model.id + "-reply-toggler").bind("click", this.toggleReply);
-                $("#post-" + this.model.id + "-reference-toggler").bind("click", this.toggleReference);
+                $("button#reply-to-post-" + this.model.id).bind("click", this.showReplyWindow);
+                $("button#post-" + this.model.id + "-reply-toggler").bind("click", this.toggleReply);
+                $("a#post-" + this.model.id + "-reference-toggler").bind("click", this.toggleReference);
+                $("button#btn-like-" + this.model.id).bind("click", this.like);
+                $("button#btn-bookmark-" + this.model.id).bind("click", this.bookmark);
+                $("a#post-unlike-" + this.model.id).bind("click", this.unlike);
             },
             
             render: function(){
                 variables = this.getVariables(this.model);
-
                 var template = _.template( disStorage.templates.postRowTemplate, variables );
                 this.$el.append( template );
             },
@@ -115,7 +117,6 @@ define(["dis"], function(dis){
             },
                     
             getVariables: function(postModel){
-                
                 return variables = {
                     id:                         postModel.get("id"),
                     topic_id:                   postModel.get("topic_id"),
@@ -128,9 +129,91 @@ define(["dis"], function(dis){
                     cooked:                     postModel.get("cooked"),
                     reply_to_post_id:           postModel.get("reply_to_post_id"),
                     time_from_created:          postModel.get("time_from_created"),
+                    is_liked:                   postModel.get("isLiked"),
+                    is_bookmarked:              postModel.get("isBookmarked"),
                     userInfo:                   disStorage.users.get(postModel.get("user_id")),
 //                    replyToUserInfo:            disStorage.users.get(disStorage.posts.get(postModel.get("reply_to_post_id")).get('user_id'))
                 };
+            },
+            
+            like: function(){
+                var status = 1;
+                $.ajax({
+                    url: '/discourse/postAction',
+                    type: 'POST',
+                    data: {
+                        post_id: this.value,
+                        post_action_type_id: 2,
+                        status: status
+                    },
+                    async: false,
+                    success: function(data){
+                        data = JSON.parse(data);
+                        console.log(data);
+                        if( typeof data.postAction.post_action_type_id !== 'undefined') {
+                            $("button#btn-like-" + data.postAction.post_id).css('display', 'none');
+                            $("span#post-like-count-" + data.postAction.post_id).html(data.post.like_count);
+                            $("a#post-unlike-" + data.postAction.post_id).css('display', 'inline');
+                            $("div#like-status-" + data.postAction.post_id).css('display', 'inline');
+                        }
+                    }
+                });
+            },
+            
+            unlike: function(){
+                var post_id = this.getAttribute('value');
+                var status = 0;
+                $.ajax({
+                    url: '/discourse/postAction',
+                    type: 'POST',
+                    data: {
+                        post_id: post_id,
+                        post_action_type_id: 2,
+                        status: status
+                    },
+                    async: false,
+                    success: function(data){
+                        data = JSON.parse(data);
+                        console.log(data);
+                        if( typeof data.postAction.post_action_type_id === 'undefined') {
+                            $("button#btn-like-" + data.postAction.post_id).css('display', 'inline');
+                            $("a#post-unlike-" + data.postAction.post_id).css('display', 'none');
+                            $("span#post-like-count-" + data.postAction.post_id).html(data.post.like_count);
+                            if (data.post.like_count > 0) {
+                                $("div#like-status-" + data.postAction.post_id).css('display', 'inline');
+                            } else {
+                                $("div#like-status-" + data.postAction.post_id).css('display', 'none');
+                            }
+                        }
+                    }
+                });
+            },
+            
+            bookmark: function(){
+                var status;
+                if ($("button#btn-bookmark-" + this.value + " i").hasClass('icon-bookmark')) {
+                    status = 0;
+                } else {
+                    status = 1;
+                }
+                $.ajax({
+                    url: '/discourse/postAction',
+                    type: 'POST',
+                    data: {
+                        post_id: this.value,
+                        post_action_type_id: 1,
+                        status: status
+                    },
+                    async: false,
+                    success: function(data){
+                        data = JSON.parse(data);
+                        if( typeof data.postAction.post_action_type_id === 'undefined') {
+                            $("button#btn-bookmark-" + data.postAction.post_id + " i").removeClass().addClass('icon-bookmark-empty');
+                        } else {
+                            $("button#btn-bookmark-" + data.postAction.post_id + " i").removeClass().addClass('icon-bookmark');
+                        }
+                    }
+                });
             }
         }),
         
@@ -164,7 +247,6 @@ define(["dis"], function(dis){
                             data: {
                                 raw:        this.variables.content,
                                 topic_id:   this.variables.topic_id,
-    //                            reply_to_post_id: 1,
                             },
                             async: false,
                             success: function(data){

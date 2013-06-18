@@ -30,7 +30,7 @@ class PostActionController extends DiscourseRestfulController
      */   
     public function create($data)
     {
-        return json_encode(Pi::service('api')->discourse(array('postAction', 'handleAction'), $data));
+        return json_encode(Pi::service('api')->discourse(array('postAction', 'handle'), $data));
     }
     
     /**

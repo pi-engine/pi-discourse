@@ -9,6 +9,10 @@ use Pi\Db\RowGateway\RowGateway;
 
 class Topic extends AbstractApi
 {
+    const POST_ACTION_BOOKMARK  = 1;
+    
+    const POST_ACTION_LIKE      = 2;
+    
     /**
      * get posts with offset, limit and topic filter
      * if logged in, update `time_last_visited` in table `topic_user`
@@ -48,8 +52,49 @@ class Topic extends AbstractApi
         }
         unset($post);
         
+        
+        /**
+         * if logged in, add some info.
+         */
         $userData = Pi::service('api')->discourse(array('user', 'getCurrentUserInfo'));
         if(!$userData['isguest']) {
+            /**
+             * add post action info(like, bookmark, etc.)
+             */
+            $postIds = array();
+            foreach($posts as $post) {
+                 array_push($postIds, $post['id']);
+            }
+            $postActionModel = \Pi::model('post_action', 'discourse');
+            $select = $postActionModel->select()
+                    ->where(array(
+                        'user_id'               => intval($userData['id']),
+                        'post_id'               => $postIds,
+                    ));
+            $rowset = $postActionModel->selectWith($select);
+            $postActionResults = $rowset->toArray();
+            foreach ($postActionResults as $postAction) {
+                switch ($postAction['post_action_type_id']) {
+                    case static::POST_ACTION_BOOKMARK:
+                        foreach ($posts as &$post) {
+                            if ($post['id'] == $postAction['post_id']) {
+                                $post['isBookmarked'] = 1;
+                            }
+                        }
+                        unset($post);
+                    case static::POST_ACTION_LIKE:
+                        foreach ($posts as &$post) {
+                            if ($post['id'] == $postAction['post_id']) {
+                                $post['isLiked'] = 1;
+                            }
+                        }
+                        unset($post);
+                }
+            }
+            
+            /**
+             * update topic user info(last read post, last view time, etc.)
+             */
             $topicUserModel = \Pi::model('topic_user', 'discourse');
 
             $lastPost = end($posts);
@@ -80,7 +125,9 @@ class Topic extends AbstractApi
             }
         }
         
-        
+        /**
+         * add user info
+         */
         $users = array();
         
         foreach($posts as $post) {
