@@ -21,7 +21,7 @@ class ClientCategoryController extends FrontController
     public function categoryAction()
     {
         $id = $this->params('id');
-        $topics = Pi::service('api')->discourse(array('category', 'getTopics'), $id);
+        $topics = Pi::service('api')->discourse(array('topic', 'getTopics'), $id);
         $this->preStore('topics', $topics);
         
         $this->view()->assign('actionName', str_replace('Action', '', __FUNCTION__));
@@ -32,7 +32,7 @@ class ClientCategoryController extends FrontController
     public function categoryJsonAction()
     {
         $id = $this->params('id');
-        $topics = Pi::service('api')->discourse(array('category', 'getTopics'), $id);
+        $topics = Pi::service('api')->discourse(array('topic', 'getTopics'), $id);
 
         return json_encode($topics);
     }

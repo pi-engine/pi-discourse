@@ -1,6 +1,6 @@
 /* << replace >>*/
 
-pjax = 1;
+pjax = false;
 var scripts = document.getElementsByTagName("script");
 
 //config requirejs

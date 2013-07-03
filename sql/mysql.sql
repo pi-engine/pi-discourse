@@ -218,3 +218,25 @@ CREATE TABLE `{notifications}` (
     KEY (`user_id`),
     KEY (`read`)
 )ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+# DROP TABLE IF EXISTS `user_action`;
+CREATE TABLE `{user_action}` (
+    `id`                        INT(10) UNSIGNED    NOT NULL auto_increment,
+    `action_type`               INT(10) UNSIGNED    NOT NULL,
+    `user_id`                   INT(10) UNSIGNED    NOT NULL,
+    `target_topic_id`           INT(10) UNSIGNED    NOT NULL,
+    `target_post_id`            INT(10) UNSIGNED    NOT NULL,
+    `target_user_id`            INT(10) UNSIGNED    NOT NULL,
+    `acting_user_id`            INT(10) UNSIGNED    NOT NULL,
+    `time_created`              INT(10) UNSIGNED    NOT NULL,
+    `time_updated`              INT(10) UNSIGNED    NOT NULL,
+    PRIMARY KEY (`id`),
+    KEY (`user_id`),
+    KEY (`action_type`),
+    KEY (`target_user_id`)
+)ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+# `action_type`:
+# USER_ACTION_BOOKMARK      = 1;
+# USER_ACTION_LIKE          = 2;
+# USER_ACTION_STAR          = 3;
+# USER_ACTION_RESPONSE      = 4;

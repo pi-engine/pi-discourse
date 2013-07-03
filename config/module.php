@@ -83,6 +83,7 @@ return array(
                     'post_action'       => 'table',
                     'post_action_type'  => 'table',
                     'notifications'     => 'table',
+                    'user_action'       => 'table',
                 )
             ),
             // Module configs

@@ -6,20 +6,33 @@ define(["dis"], function(dis){
             el: $("#main-outlet"),
             
             events: {
-                "click #btn-reply-to-topic":    "showCreatePostWindow"
+                "click button#btn-reply-to-topic": "showCreatePostWindow",
+//                "scroll window"                  : "more"
             },
             
             initialize: function(){
                 this.render();
-                _.each(disStorage.posts.models, function(post){
-                    var postRowView = new action.PostRowView({ model: post });
+                disStorage.posts.each(function(post){
+                    post.set("view", new action.PostRowView({
+                        model: post,
+                        id: "post-" + post.get('id'),
+                        attributes: {
+                            identity: post.get('id'),
+                        }
+                    }));
                 });
             },
             
             render: function(){
                 variables = this.getVariables(disStorage.currentTopic);
-                var template = _.template( disStorage.templates.topicMainTemplate, variables );
-                this.$el.append( template );
+                this.$el.append(_.template( disStorage.templates.topicMainTemplate, variables));
+                
+//                window.action.page = 1;
+//                $(window).bind('scroll',function (){ 
+//                    if($(window).scrollTop()+$(window).height()>=$(document).height()){ 
+//                        this.more();
+//                    }
+//                });
             },
                     
             getVariables: function(topicModel){
@@ -40,29 +53,40 @@ define(["dis"], function(dis){
                     action.postCreateView.model = disStorage.currentTopic;
                     action.postCreateView.render();
                 }
-            }
+            },
         }),
         
         PostRowView: Backbone.View.extend({
+            className: "ember-view topic-post clearfix regular",
+            
             initialize: function(){
-                this.$el = $("#post-row-container"),
                 this.render();
-                $("button#reply-to-post-" + this.model.id).bind("click", this.showReplyWindow);
-                $("button#post-" + this.model.id + "-reply-toggler").bind("click", this.toggleReply);
-                $("a#post-" + this.model.id + "-reference-toggler").bind("click", this.toggleReference);
-                $("button#btn-like-" + this.model.id).bind("click", this.like);
-                $("button#btn-bookmark-" + this.model.id).bind("click", this.bookmark);
-                $("a#post-unlike-" + this.model.id).bind("click", this.unlike);
             },
             
+            events: {
+                "click button[name='reply-post']": "showReplyWindow",
+                "click button[name='post-reply-toggler']": "toggleReply",
+                "click a[name='post-reference-toggler']": "toggleReference",
+                "click button[name='btn-bookmark']": "bookmark",
+                "click button[name='btn-like']": "like",
+                "click a[name='post-unlike']": "unlike"
+            },
+            
+            showReplyWindow: function(e){
+                if ($("#reply-control").length === 0) {
+                    action.postCreateView = action.postCreateView || new action.PostCreateView();
+                    action.postCreateView.model = disStorage.posts.get(e.currentTarget.value);
+                    action.postCreateView.render();
+                }
+            },
             render: function(){
                 variables = this.getVariables(this.model);
-                var template = _.template( disStorage.templates.postRowTemplate, variables );
-                this.$el.append( template );
+                this.$el.html(_.template(disStorage.templates.postRowTemplate, variables));
+                $("#post-row-container").append(this.$el);
             },
             
-            toggleReference: function(){
-                var post_id = this.getAttribute('value');
+            toggleReference: function(e){
+                var post_id = e.currentTarget.getAttribute('value');
                 var referd_post_id = disStorage.posts.get(post_id).get('reply_to_post_id')
                 
                 if($("#post-" + post_id + "-reference-container").children().length === 0) {
@@ -78,7 +102,7 @@ define(["dis"], function(dis){
                                 var postModel = new dis.Post(data.post);
                                 disStorage.posts.add(postModel);
                                 
-                                new action.PostRefernceView( {
+                                new action.PostRefernceView({
                                     el: $("#post-" + post_id + "-reference-container"), 
                                     model: postModel
                                 }).render();
@@ -95,24 +119,27 @@ define(["dis"], function(dis){
                 }
             },
                     
-            toggleReply: function(){
-                if($("#post-" + this.value + "-reply-container").length === 0) {
-                    new action.PostReplyContainerView( {
-                        el: $("#post-" + this.value + "-body"), 
-                        model: disStorage.posts.get(this.value)
-                    }).render();
+            toggleReply: function(e){
+                var id = e.currentTarget.value;
+                var post = disStorage.posts.get(id);
+                if($("#post-" + id + "-reply-container").length === 0) {
+                    if (typeof post.get("replyContainerView") === "undefined") {
+                        disStorage.posts.get(id).set(
+                            "replyContainerView", 
+                            new action.PostReplyContainerView({
+                                el: $("#post-" + id + "-body"),
+                                model: post
+                            })
+                        );
+                        post.get("replyContainerView").render();
+                    } else {
+                        post.get("replyContainerView").$el = $("#post-" + id + "-body");
+                        post.get("replyContainerView").model = post;
+                        post.get("replyContainerView").render();
+                    }
                 } else {
-                    $("#post-" + this.value + "-reply-container").remove();
-                    $("#post-" + this.value + "-body").addClass('bottom-round');
-                    
-                }
-            },
-            
-            showReplyWindow: function(){
-                if($("#reply-control").length === 0) {
-                    action.postCreateView = action.postCreateView || new action.PostCreateView();
-                    action.postCreateView.model = disStorage.posts.get(this.value);
-                    action.postCreateView.render();
+                    $("#post-" + id + "-reply-container").remove();
+                    $("#post-" + id + "-body").addClass('bottom-round');
                 }
             },
                     
@@ -136,13 +163,13 @@ define(["dis"], function(dis){
                 };
             },
             
-            like: function(){
+            like: function(e){
                 var status = 1;
                 $.ajax({
                     url: '/discourse/postAction',
                     type: 'POST',
                     data: {
-                        post_id: this.value,
+                        post_id: e.currentTarget.value,
                         post_action_type_id: 2,
                         status: status
                     },
@@ -160,8 +187,8 @@ define(["dis"], function(dis){
                 });
             },
             
-            unlike: function(){
-                var post_id = this.getAttribute('value');
+            unlike: function(e){
+                var post_id = e.currentTarget.getAttribute('value');
                 var status = 0;
                 $.ajax({
                     url: '/discourse/postAction',
@@ -189,9 +216,9 @@ define(["dis"], function(dis){
                 });
             },
             
-            bookmark: function(){
+            bookmark: function(e){
                 var status;
-                if ($("button#btn-bookmark-" + this.value + " i").hasClass('icon-bookmark')) {
+                if ($(e.currentTarget).find("i").hasClass('icon-bookmark')) {
                     status = 0;
                 } else {
                     status = 1;
@@ -200,7 +227,7 @@ define(["dis"], function(dis){
                     url: '/discourse/postAction',
                     type: 'POST',
                     data: {
-                        post_id: this.value,
+                        post_id: e.currentTarget.value,
                         post_action_type_id: 1,
                         status: status
                     },
@@ -208,9 +235,9 @@ define(["dis"], function(dis){
                     success: function(data){
                         data = JSON.parse(data);
                         if( typeof data.postAction.post_action_type_id === 'undefined') {
-                            $("button#btn-bookmark-" + data.postAction.post_id + " i").removeClass().addClass('icon-bookmark-empty');
+                            $("button[name='btn-bookmark'][value=" + data.postAction.post_id + "] i").removeClass().addClass('icon-bookmark-empty');
                         } else {
-                            $("button#btn-bookmark-" + data.postAction.post_id + " i").removeClass().addClass('icon-bookmark');
+                            $("button[name='btn-bookmark'][value=" + data.postAction.post_id + "] i").removeClass().addClass('icon-bookmark');
                         }
                     }
                 });
@@ -338,7 +365,7 @@ define(["dis"], function(dis){
                 this.$el.after( template );
                 
                 $.ajax({
-                    url: "/discourse/post/" + this.id + "/0/50",
+                    url: "/discourse/postReply/" + this.id + "/0/50",
                     type: 'GET',
                     async: false,
                     success: function(data){
@@ -356,7 +383,6 @@ define(["dis"], function(dis){
                                     model: currentPost,
                                 });
                             });
-                            console.log(data);
                         } else {
                             console.log(data.err_msg);
                         }
@@ -431,6 +457,45 @@ define(["dis"], function(dis){
             }
         }),
         
+        more: function() {
+            console.log('request data');
+            $.ajax({
+                url: '/discourse/post/' + disStorage.currentTopic.get('id') + '/' + (window.action.page * 20) + '/20',
+                type: 'GET',
+                async: false,
+                success: function(data){
+                    data = JSON.parse(data);
+                    if (typeof data.err_msg !== 'undefined') {
+                        console.log(data.err_msg);
+                        $(window).unbind('scroll');
+                        return;
+                    }
+                    console.log(data);
+                    
+                    _.each(data.users, function(user){
+                        disStorage.users.add(new dis.User(user));
+                    });
+                    
+                    _.each(data.posts, function(post){
+                        var currentPost = new dis.Post(post);
+                        
+                        currentPost.set("view", new action.PostRowView({
+                            model: currentPost,
+                            id: "post-" + currentPost.get('id'),
+                            attributes: {
+                                identity: currentPost.get('id'),
+                            }
+                        }));
+                        
+                        disStorage.posts.add(currentPost);
+
+                    });
+
+                    window.action.page++;
+                }
+            });
+        },
+
         run: function(id){
             console.log('running post.js');
             
@@ -498,6 +563,18 @@ define(["dis"], function(dis){
                  */
                 $("#main-outlet").empty();
                 new action.TopicMainView();
+                
+                window.action.page = 1;
+                $(window).bind('scroll',function (){ 
+                    if($(window).scrollTop()+$(window).height()>=$(document).height()){ 
+                        window.action.more();
+                    }
+                });
+                
+                /**
+                 * locate the post if specified
+                 */
+                
             });
         }
     };

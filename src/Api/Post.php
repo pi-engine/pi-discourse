@@ -9,6 +9,12 @@ use Pi\Db\RowGateway\RowGateway;
 
 class Post extends AbstractApi
 {
+    const POST_ACTION_BOOKMARK  = 1;
+    
+    const POST_ACTION_LIKE      = 2;
+    
+    const USER_ACTION_RESPONSE  = 4;
+    
     /**
      * Create a post, check if topic_id is defined, and if is is a reply to
      * another post.
@@ -23,9 +29,10 @@ class Post extends AbstractApi
     {
         $replyToPostId = null;
         
-        $postModel  = \Pi::model('post', 'discourse');
-        $topicModel = \Pi::model('topic', 'discourse');
-
+        $postModel          = \Pi::model('post', 'discourse');
+        $topicModel         = \Pi::model('topic', 'discourse');
+        $userActionModel    = \Pi::model('user_action', 'discourse');
+        
         $userData = Pi::service('api')->discourse(array('user', 'getCurrentUserInfo'));
         if($userData['isguest']) {
             return array( 'err_msg' => "You haven't logged in." );
@@ -40,9 +47,17 @@ class Post extends AbstractApi
             return array( 'err_msg' => "Require topic id." );
         }
         
-        if(isset($data['reply_to_post_id'])){
+        $userActionData = array(
+            'action_type'       => static::USER_ACTION_RESPONSE,
+            'target_topic_id'   => intval($data['topic_id']),
+            'target_user_id'    => $userData['id'],
+            'time_created'      => time(),
+            'time_updated'      => time(),
+        );
+        
+        if (isset($data['reply_to_post_id'])) {
             $repliedPostRow = $postModel->find(intval($data['reply_to_post_id']));
-            if(!$repliedPostRow->id) {
+            if (!$repliedPostRow->id) {
                 return array( 'err_msg' => "Replied post not exists." );
             } else {
                 if( $data['topic_id'] == $repliedPostRow->topic_id) {
@@ -54,8 +69,20 @@ class Post extends AbstractApi
                 } else {
                     return array( 'err_msg' => "Replied post doesn't exist in that topic." );
                 }
+                $userActionData['target_post_id'] = $replyToPostId;
+                $userActionData['user_id'] = $repliedPostRow->user_id;
             }
+        } else {
+            $select = $postModel->select()->where(array(
+                'topic_id'      => intval($data['topic_id']), 
+                'post_number'   => 1,
+            ));
+            $postRowSet = $postModel->selectWith($select);
+            $postRow = $postRowSet->current();
+            $userActionData['target_post_id'] = $postRow->id;
+            $userActionData['user_id'] = $postRow->user_id;
         }
+        
         
         $select = $postModel->select()
                 ->where(array('topic_id' => intval($data['topic_id'])));
@@ -77,9 +104,14 @@ class Post extends AbstractApi
         
         $postRow = $postModel->createRow($data);
         $postRow->save();
+        
+        
         if (!$postRow->id) {
             return false;
         } else {
+            $userActionRow = $userActionModel->createRow($userActionData);
+            $userActionRow->save();
+        
             if($replyToPostId) {
                 $postReplyModel = \Pi::model('post_reply', 'discourse');
                 $relationData = array(
@@ -250,6 +282,152 @@ class Post extends AbstractApi
         } else {
             return array();
         }
+    }
+    
+    /**
+     * get posts with offset, limit and topic filter
+     * if logged in, update `time_last_visited` in table `topic_user`
+     * 
+     * @param  mixed $topicId
+     * @param  mixed $offset = 0
+     * @param  mixed $limit = 20
+     * @return array
+     */
+    public function getPosts($topicId, $offset = 0, $limit = 20)
+    {
+        $postModel          = \Pi::model('post', 'discourse');
+        $topicUserModel     = \Pi::model('topic_user', 'discourse');
+        $userModel          = \Pi::model('user', 'discourse');
+        $postReplyModel     = \Pi::model('post_reply', 'discourse');
+        
+        $postTable          = $postModel->getTable();
+        $postReplyTable     = $postReplyModel->getTable();
+        
+        $select = $postModel->select()
+                ->where(array('topic_id' => intval($topicId)))
+                ->order(array('post_number'))
+                ->offset(intval($offset))
+                ->limit(intval($limit))
+                ->join(array('postReplyTable' => $postReplyTable),
+                       'postReplyTable.post_id = ' . $postTable . '.id', 
+                       array('reply_to_post_id'), 
+                       'left'
+                );
+        
+        $rowset = $postModel->selectWith($select);
+        $posts = $rowset->toArray();
+        
+        if (empty($posts)) {
+            return array( 'err_msg' => "No more posts." );
+        }
+        
+        foreach($posts as &$post) {
+            $post['time_from_created']      = $this->timeFromNow($post['time_created']);
+            $post['time_created']           = date('Y-m-d h:i:s', $post['time_created']);
+            $post['time_updated']           = date('Y-m-d h:i:s', $post['time_updated']);
+            $post['post_number']            = intval($post['post_number']);
+        }
+        unset($post);
+        
+        
+        /**
+         * if logged in, add some info.
+         */
+        $userData = Pi::service('api')->discourse(array('user', 'getCurrentUserInfo'));
+        if(!$userData['isguest']) {
+            /**
+             * add post action info(like, bookmark, etc.)
+             */
+            $postIds = array();
+            foreach($posts as $post) {
+                 array_push($postIds, $post['id']);
+            }
+            $postActionModel = \Pi::model('post_action', 'discourse');
+            $select = $postActionModel->select()
+                    ->where(array(
+                        'user_id'               => intval($userData['id']),
+                        'post_id'               => $postIds,
+                    ));
+            $rowset = $postActionModel->selectWith($select);
+            $postActionResults = $rowset->toArray();
+            foreach ($postActionResults as $postAction) {
+                switch ($postAction['post_action_type_id']) {
+                    case static::POST_ACTION_BOOKMARK:
+                        foreach ($posts as &$post) {
+                            if ($post['id'] == $postAction['post_id']) {
+                                $post['isBookmarked'] = 1;
+                            }
+                        }
+                        unset($post);
+                    case static::POST_ACTION_LIKE:
+                        foreach ($posts as &$post) {
+                            if ($post['id'] == $postAction['post_id']) {
+                                $post['isLiked'] = 1;
+                            }
+                        }
+                        unset($post);
+                }
+            }
+            
+            /**
+             * update topic user info(last read post, last view time, etc.)
+             */
+            $topicUserModel = \Pi::model('topic_user', 'discourse');
+
+            $lastPost = end($posts);
+            
+            $select = $topicUserModel->select()
+                    ->where(array('topic_id' => $topicId, 'user_id' => $userData['id'] ));
+            $topicUserRowset = $topicUserModel->selectWith($select);
+            $topicUserRow = $topicUserRowset->toArray();
+            
+            if(!$topicUserRow[0]) {
+                $topicUserData = array(
+                                    'topic_id'              => $topicId,
+                                    'user_id'               => $userData['id'],
+                                    'time_last_visited'     => time(),
+                                );
+                $topicUserRow = $topicUserModel->createRow($topicUserData);
+                $topicUserRow->save();
+            } else {
+                $topicUserModel->update(
+                                        array(
+                                            'time_last_visited' => time(),
+                                        ),
+                                        array(
+                                            'topic_id'  => $topicId,
+                                            'user_id'   => $userData['id'],
+                                        )
+                                    );
+            }
+        }
+        
+        /**
+         * add user info
+         */
+        $users = array();
+        
+        foreach($posts as $post) {
+            if(!in_array($post['user_id'], $users)) {
+                array_push($users, $post['user_id']);
+            }
+        }
+        $select = $userModel->select()
+                ->where(array( 'id' => $users ))
+                ->columns(array('id', 'username', 'name', 'avatar'));
+
+        $rowset = $userModel->selectWith($select);
+        $users = $rowset->toArray();
+        
+        foreach($users as &$user) {
+            if(empty($user['name'])) {
+                $user['name'] = $user['username'];
+            }
+            unset($user['username']);
+        }
+        unset($user);
+
+        return array( 'posts' => $posts, 'users' => $users );
     }
     
     public function timeFromNow($time)

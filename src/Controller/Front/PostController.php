@@ -30,7 +30,6 @@ class PostController extends DiscourseRestfulController
      */
     public function get($id)
     {
-//        return json_encode($this->getPost($id));
         return json_encode(Pi::service('api')->discourse(array('post', 'getPost'), $id));
     }
     
@@ -40,7 +39,6 @@ class PostController extends DiscourseRestfulController
      */   
     public function create($data)
     {
-//        return json_encode($this->createPost($data));
         return json_encode(Pi::service('api')->discourse(array('post', 'createPost'), $data));
     }
     
@@ -50,7 +48,6 @@ class PostController extends DiscourseRestfulController
      */
     public function update($id, $parsedParams)
     {
-//        return json_encode($this->updatePost($id, $parsedParams));
         return json_encode(Pi::service('api')->discourse(array('post', 'updatePost'), $id, $parsedParams));
     }
     
@@ -60,7 +57,6 @@ class PostController extends DiscourseRestfulController
      */    
     public function delete($id)
     {
-//        return json_encode($this->deletePost($id));
         return json_encode(Pi::service('api')->discourse(array('post', 'deletePost'), $id));
     }
     
@@ -70,8 +66,6 @@ class PostController extends DiscourseRestfulController
      */
     public function getMulti($postId, $offset = 0, $limit = 20)
     {
-//        throw new \Zend\Mvc\Exception\DomainException('Invalid HTTP method!');
-//        return json_encode($this->getPostReply($postId, $offset, $limit));
-        return json_encode(Pi::service('api')->discourse(array('post', 'getPostReply'), $postId, $offset, $limit));
+        return json_encode(Pi::service('api')->discourse(array('post', 'getPosts'), $postId, $offset, $limit));
     }
 }

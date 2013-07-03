@@ -53,20 +53,23 @@ class DiscourseRoute extends Standard
             $second = isset($params[1]) ? $params[1] : null;
             $third  = isset($params[2]) ? $params[2] : null;
             $fourth = isset($params[3]) ? $params[3] : null;
+//            $fifth  = isset($params[4]) ? $params[4] : null;
             
             if ('user' === $first 
+                || 'userAction' === $first 
                 || 'category' === $first 
                 || 'topic' === $first 
                 || 'post' === $first 
                 || 'postAction' === $first 
                 || 'star' === $first 
+                || 'postReply' === $first 
                 || 0
             ) {
                 $matches['controller']  = $first;
                 $matches['action']      = null;
                 $matches['id']          = is_numeric($params[1]) ? $params[1] : null;
                 $matches['offset']      = is_numeric($params[2]) ? $params[2] : null;
-                $matches['limit']       = is_numeric($params[3]) ? $params[3] : null;
+                $matches['limit']       = is_numeric($params[3]) ? $params[3] : null;                
             } else if ('register' === $first) {
                 $matches['controller']  = 'clientRegister';
                 $matches['action']      = 'register';
@@ -125,6 +128,27 @@ class DiscourseRoute extends Standard
 //                } else {
 //                    return null;
 //                }
+            } else if ('u' === $first) {
+                if($second) {
+                    if(is_numeric($second)) {
+                        $matches['id']          = is_numeric($second) ? $second : null;
+                        $matches['controller']  = 'clientUser';
+                        $matches['action']      = 'user';
+                    } else if(strpos($second, ".json")) {
+                        $c_id = str_replace(".json", "", $second);
+                        if(is_numeric($c_id)) {
+                            $matches['id']          = $c_id;
+                            $matches['controller']  = 'clientUser';
+                            $matches['action']      = 'userJson';
+                        } else {
+                            return null;
+                        }
+                    } else {
+                        return null;
+                    }
+                } else {
+                    return null;
+                }
             } else if ('c.json' === $first) {
                 $matches['controller']  = 'clientCategory';
                 $matches['action']      = 'categoryListJson';

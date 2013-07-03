@@ -14,146 +14,6 @@ class Topic extends AbstractApi
     const POST_ACTION_LIKE      = 2;
     
     /**
-     * get posts with offset, limit and topic filter
-     * if logged in, update `time_last_visited` in table `topic_user`
-     * 
-     * @param  mixed $topicId
-     * @param  mixed $offset = 0
-     * @param  mixed $limit = 20
-     * @return array
-     */
-    public function getPosts($topicId, $offset = 0, $limit = 20)
-    {
-        $postModel          = \Pi::model('post', 'discourse');
-        $topicUserModel     = \Pi::model('topic_user', 'discourse');
-        $userModel          = \Pi::model('user', 'discourse');
-        $postReplyModel     = \Pi::model('post_reply', 'discourse');
-        
-        $postTable          = $postModel->getTable();
-        $postReplyTable     = $postReplyModel->getTable();
-        
-        $select = $postModel->select()
-                ->where(array('topic_id' => intval($topicId)))
-                ->order(array('post_number'))
-                ->offset(intval($offset))
-                ->limit(intval($limit))
-                ->join(array('postReplyTable' => $postReplyTable),
-                       'postReplyTable.post_id = ' . $postTable . '.id', 
-                       array('reply_to_post_id'), 
-                       'left'
-                );
-        
-        $rowset = $postModel->selectWith($select);
-        $posts = $rowset->toArray();
-        foreach($posts as &$post) {
-            $post['time_from_created']      = $this->timeFromNow($post['time_created']);
-            $post['time_created']           = date('Y-m-d h:i:s', $post['time_created']);
-            $post['time_updated']           = date('Y-m-d h:i:s', $post['time_updated']);
-        }
-        unset($post);
-        
-        
-        /**
-         * if logged in, add some info.
-         */
-        $userData = Pi::service('api')->discourse(array('user', 'getCurrentUserInfo'));
-        if(!$userData['isguest']) {
-            /**
-             * add post action info(like, bookmark, etc.)
-             */
-            $postIds = array();
-            foreach($posts as $post) {
-                 array_push($postIds, $post['id']);
-            }
-            $postActionModel = \Pi::model('post_action', 'discourse');
-            $select = $postActionModel->select()
-                    ->where(array(
-                        'user_id'               => intval($userData['id']),
-                        'post_id'               => $postIds,
-                    ));
-            $rowset = $postActionModel->selectWith($select);
-            $postActionResults = $rowset->toArray();
-            foreach ($postActionResults as $postAction) {
-                switch ($postAction['post_action_type_id']) {
-                    case static::POST_ACTION_BOOKMARK:
-                        foreach ($posts as &$post) {
-                            if ($post['id'] == $postAction['post_id']) {
-                                $post['isBookmarked'] = 1;
-                            }
-                        }
-                        unset($post);
-                    case static::POST_ACTION_LIKE:
-                        foreach ($posts as &$post) {
-                            if ($post['id'] == $postAction['post_id']) {
-                                $post['isLiked'] = 1;
-                            }
-                        }
-                        unset($post);
-                }
-            }
-            
-            /**
-             * update topic user info(last read post, last view time, etc.)
-             */
-            $topicUserModel = \Pi::model('topic_user', 'discourse');
-
-            $lastPost = end($posts);
-            
-            $select = $topicUserModel->select()
-                    ->where(array('topic_id' => $topicId, 'user_id' => $userData['id'] ));
-            $topicUserRowset = $topicUserModel->selectWith($select);
-            $topicUserRow = $topicUserRowset->toArray();
-            
-            if(!$topicUserRow[0]) {
-                $topicUserData = array(
-                                    'topic_id'              => $topicId,
-                                    'user_id'               => $userData['id'],
-                                    'time_last_visited'     => time(),
-                                );
-                $topicUserRow = $topicUserModel->createRow($topicUserData);
-                $topicUserRow->save();
-            } else {
-                $topicUserModel->update(
-                                        array(
-                                            'time_last_visited' => time(),
-                                        ),
-                                        array(
-                                            'topic_id'  => $topicId,
-                                            'user_id'   => $userData['id'],
-                                        )
-                                    );
-            }
-        }
-        
-        /**
-         * add user info
-         */
-        $users = array();
-        
-        foreach($posts as $post) {
-            if(!in_array($post['user_id'], $users)) {
-                array_push($users, $post['user_id']);
-            }
-        }
-        $select = $userModel->select()
-                ->where(array( 'id' => $users ))
-                ->columns(array('id', 'username', 'name', 'avatar'));
-
-        $rowset = $userModel->selectWith($select);
-        $users = $rowset->toArray();
-        
-        foreach($users as &$user) {
-            if(empty($user['name'])) {
-                $user['name'] = $user['username'];
-            }
-            unset($user['username']);
-        }
-        unset($user);
-        
-        return array( 'posts' => $posts, 'users' => $users );
-    }
-    
-    /**
      * Get a topic's info by id
      * 
      * @param  mixed $id
@@ -169,6 +29,82 @@ class Topic extends AbstractApi
         $topics = $rowset->toArray();
         
         return $topics[0];
+    }
+    
+    /**
+     * get topics with offset, limit and category filter
+     * 
+     * @param  mixed $categoryId
+     * @param  mixed $offset = 0
+     * @param  mixed $limit = 20
+     * @return array
+     */
+    public function getTopics($categoryId, $offset = 0, $limit = 20)
+    {
+        $topicModel     = \Pi::model('topic', 'discourse');
+        
+        $select = $topicModel->select()
+                ->where(array(
+                        'category_id'   => intval($categoryId),
+                        'visible'       => 1
+                ))
+                ->order(array(
+                        'pinned DESC', 
+                        'time_updated DESC'
+                ))
+                ->offset(intval($offset))
+                ->limit(intval($limit));
+        $rowset = $topicModel->selectWith($select);
+        $topics = $rowset->toArray();
+        
+        if (empty($topics)) {    
+            return array( 'err_msg' => "No more topics." );
+        }
+        
+        // if loggen in
+        $userData = Pi::service('api')->discourse(array('user', 'getCurrentUserInfo'));
+        if(!$userData['isguest']) {
+            $topicIds = array();
+            foreach($topics as $topic) {
+                 array_push($topicIds, $topic['id']);
+            }
+            $topicUserModel = \Pi::model('topic_user', 'discourse');
+            $select = $topicUserModel->select()
+                    ->where(array(
+                        'user_id'   => intval($userData['id']),
+                        'topic_id'  => $topicIds,
+                    ));
+            $rowset = $topicUserModel->selectWith($select);
+            $topicUserResults = $rowset->toArray();
+            foreach($topicUserResults as $topicUserResult) {
+                foreach($topics as &$topic) {
+                    if($topic['id'] == $topicUserResult['topic_id']) {
+                        $topic['starred'] = $topicUserResult['starred'];
+                        break;
+                    }
+                }
+                unset($topic);
+            }
+        }
+        
+        foreach($topics as &$topic) {
+            if (!isset($topic['starred'])) {
+                $topic['starred'] = 0;
+            }
+            $topic['time_from_created']     = $this->timeFromNow($topic['time_created']);
+            $topic['time_from_last_posted'] = $this->timeFromNow($topic['time_last_posted']);
+            $topic['time_created']          = date('Y-m-d h:i:s', $topic['time_created']);
+            $topic['time_updated']          = date('Y-m-d h:i:s', $topic['time_updated']);
+            $topic['time_last_posted']      = date('Y-m-d h:i:s', $topic['time_last_posted']);
+            $topic['starred']               = intval($topic['starred']);
+            $topic['pinned']                = intval($topic['pinned']);
+            $topic['closed']                = intval($topic['closed']);
+            $topic['visible']               = intval($topic['visible']);
+        }
+        unset($topic);
+        
+//        d($topics);
+        return $topics;
     }
     
     /**

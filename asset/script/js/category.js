@@ -191,12 +191,16 @@ define(["dis"], function(dis){
         more: function() {
             console.log('request data');
             $.ajax({
-                url: '/discourse/category/' + disStorage.currentCategory.get('id') + '/' + (window.action.page * 20) + '/20',
+                url: '/discourse/topic/' + disStorage.currentCategory.get('id') + '/' + (window.action.page * 20) + '/20',
                 type: 'GET',
                 async: false,
                 success: function(data){
                     data = JSON.parse(data);
-                    
+                    if (typeof data.err_msg !== 'undefined') {
+                        console.log(data.err_msg);
+                        $(window).unbind('scroll');
+                        return;
+                    }
                     _.each(data, function(topic){
                         var currentTopic = new dis.Topic(topic);
                         disStorage.topics.add(currentTopic);

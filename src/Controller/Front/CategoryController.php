@@ -70,6 +70,6 @@ class CategoryController extends DiscourseRestfulController
     public function getMulti($categoryId, $offset = 0, $limit = 20)
     {
 //        return json_encode($this->getTopics($categoryId, $offset, $limit));
-        return json_encode(Pi::service('api')->discourse(array('category', 'getTopics'), $categoryId, $offset, $limit));
+//        return json_encode(Pi::service('api')->discourse(array('topic', 'getTopics'), $categoryId, $offset, $limit));
     }
 }

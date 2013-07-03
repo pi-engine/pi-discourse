@@ -63,4 +63,14 @@ class TopicController extends DiscourseRestfulController
 //        return json_encode($this->deleteTopic($id));
         return json_encode(Pi::service('api')->discourse(array('topic', 'deleteTopic'), $id));
     }
+    
+    /**
+     * /topic/{id}/{num1}/{num2} GET
+     * 
+     */
+    public function getMulti($categoryId, $offset = 0, $limit = 20)
+    {
+//        return json_encode($this->getTopics($categoryId, $offset, $limit));
+        return json_encode(Pi::service('api')->discourse(array('topic', 'getTopics'), $categoryId, $offset, $limit));
+    }
 }

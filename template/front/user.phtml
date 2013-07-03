@@ -1,0 +1,110 @@
+<?php
+    $this->jQuery();
+    $this->backbone();
+    $this->js($this->asset('module/discourse', 'script/js/preload_store.js'));
+    $this->js($this->asset('module/discourse', 'script/js/require.js'));   
+    $this->js($this->asset('module/discourse', 'script/js/boot.js'));
+    $this->js($this->asset('module/discourse', 'script/ckeditor/ckeditor.js'));
+    $this->headMeta()->appendName('actionName', $this->actionName);
+?>
+<script type="text/javascript">
+   <?php echo $this->preloadStore;?>
+</script>
+
+<!--
+  <div id="ember1686" class="ember-view">
+    <div class="user-heading">
+      <div class="container">
+        <div class="full-width" id="user-menu">
+          <h1>Forum Admin<span>forumadmin</span></h1>
+          <button data-ember-action="237" class="btn">Log Out</button>
+          <a href="/admin/users/forumadmin" class="btn"><i class="icon-wrench"></i>&nbsp;Admin</a>
+          <ul class="nav nav-pills">
+            <li>
+              <a id="ember1758" class="ember-view active" href="/users/forumadmin">Activity</a>
+            </li>
+            <li>
+              <a id="ember1760" class="ember-view" href="/users/forumadmin/private-messages">Messages</a>
+            </li>
+            <li>
+              <a id="ember1761" class="ember-view" href="/users/forumadmin/invited">Invites</a>
+            </li>
+            <li>
+              <a id="ember1763" class="ember-view" href="/users/forumadmin/preferences">Preferences</a>
+            </li>
+          </ul>
+          <div class="avatar-wrapper">
+            <img width="120" height="120" src="https://www.gravatar.com/avatar/b30fff48d257cdd17c4437afac19fd30.png?s=120&amp;r=pg&amp;d=identicon" class="avatar " title="forumadmin">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="user-info clearfix">
+         <div class="about-me">
+           <div class="missing-profile">the About Me field of your profile is currently blank, <a href="/users/forumadmin/preferences">would you like to fill it out?</a></div>
+         </div>
+      </div>
+    </div>
+    <div class="container">
+      <div id="ember1739" class="ember-view">
+        <div id="user-info"> 
+          <nav class="buttons">
+            <a id="ember1771" class="ember-view btn" href="/users/forumadmin/preferences">Edit Preferences</a><br>
+          </nav>
+          <div class="clearfix">
+          </div>
+          <ul class="action-list nav-stacked side-nav">
+            <li id="ember1773" class="ember-view active"><a href="#">All <span class="count">(54)</span><span class="icon-chevron-right"></span></a></li>
+            <li id="ember1793" class="ember-view"><a href="#">Bookmarks <span class="count">(1)</span><span class="icon-chevron-right"></span></a></li>
+            <li id="ember1794" class="ember-view"><a href="#">Topics <span class="count">(5)</span><span class="icon-chevron-right"></span></a></li>
+            <li id="ember1795" class="ember-view"><a href="#">Posts <span class="count">(25)</span><span class="icon-chevron-right"></span></a></li>
+            <li id="ember1796" class="ember-view"><a href="#">Responses <span class="count">(13)</span><span class="icon-chevron-right"></span></a></li>
+            <li id="ember1797" class="ember-view"><a href="#">Likes Given <span class="count">(6)</span><span class="icon-chevron-right"></span></a></li>
+            <li id="ember1798" class="ember-view"><a href="#">Likes Received <span class="count">(3)</span><span class="icon-chevron-right"></span></a></li>
+            <li id="ember1799" class="ember-view"><a href="#">Favorites <span class="count">(1)</span><span class="icon-chevron-right"></span></a></li>
+          </ul>
+          <div class="show">
+            <dl>
+              <dt>Created At:</dt><dd><span class="date" title="March 21, 2013 6:43am">21 Mar</span></dd>
+              <dt>Last Post:</dt><dd><span class="date" title="May 29, 2013 2:24pm">29 May</span></dd>
+              <dt>Last Seen:</dt><dd><span class="date" title="June 19, 2013 3:09pm">3 seconds</span></dd>
+              <dt>Email:</dt><dd title="team@discourse.org" data-bindattr-238="238"><script id="metamorph-248-start" type="text/x-placeholder"></script>team@discourse.org<script id="metamorph-248-end" type="text/x-placeholder"></script></dd>
+              <dt>Trust Level:</dt><dd><script id="metamorph-249-start" type="text/x-placeholder"></script>visitor<script id="metamorph-249-end" type="text/x-placeholder"></script></dd>
+            </dl>
+          </div>
+          <div style="margin-top: 10px">
+            <button class="btn" data-not-implemented="true" disabled="" title="That feature hasn't been implemented yet, sorry!">download archive of my posts</button>
+          </div>
+        </div>
+        <div id="ember1806" class="ember-view">
+          <div id="user-stream">
+            <div id="ember1809" class="ember-view">
+              <div id="ember1862" class="ember-view item">
+                <div class="clearfix info">
+                  <a href="/users/liquan" class="avatar-link"><div class="avatar-wrapper"><img width="45" height="45" src="https://www.gravatar.com/avatar/7279e8a33fbe1bd97c365b36bc32fcbb.png?s=45&amp;r=pg&amp;d=identicon" class="avatar actor" title="liquan"></div></a>
+                  <span class="time"><span class="date" title="June 19, 2013 11:23am">3 hours ago</span></span>
+                  <span class="title">
+                    <a href="/t/category-definition-for-category-cc/20/35">Category definition for category cc</a>
+                  </span>
+                  <span class="type">
+                    Posted by
+                  </span>
+                  <a class="name" href="/users/liquan">liquan</a>
+                </div>
+                <p class="excerpt">
+                asfaf [Replace this first paragraphasd with a short dess ssssssssssssss sssscription of your new category. Try to keep it b 
+                </p>
+                <div class="child-actions">
+                  <i class="icon icon-bookmark"></i>
+                  <a href="/users/forumadmin" class="avatar-link"><div class="avatar-wrapper"><img width="20" height="20" src="https://www.gravatar.com/avatar/b30fff48d257cdd17c4437afac19fd30.png?s=20&amp;r=pg&amp;d=identicon" class="avatar actor" title="forumadmin"></div></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="user-stream-bottom"></div>
+      </div>
+    </div>
+  </div>
+-->
