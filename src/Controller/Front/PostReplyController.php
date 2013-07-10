@@ -45,7 +45,7 @@ class PostReplyController extends DiscourseRestfulController
     /**
      * /operation/{id} DELETE
      * 
-     */    
+     */
     public function delete($id)
     {
         throw new \Zend\Mvc\Exception\DomainException('Invalid HTTP method!');

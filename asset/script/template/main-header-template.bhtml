@@ -18,7 +18,7 @@
         </div>
         <div class="panel clearfix">
             <div class="current-username">
-                <a href="/u/" data-bindattr-4="4"><%= user.get('name') %></a>
+                <a href="/discourse/u/<%= user.get('id') %>" data-bindattr-4="4"><%= user.get('name') %></a>
             </div>
             <ul class="icons clearfix">
                 <li class="notifications">

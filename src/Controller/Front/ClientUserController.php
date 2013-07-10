@@ -13,13 +13,21 @@ class ClientUserController extends FrontController
     {
         $id = $this->params('id');
         $userData = Pi::service('api')->discourse(array('user', 'get'), $id);
+        $userActionCountData = Pi::service('api')->discourse(array('userAction', 'getUserActionCount'), $id);
         
         $this->preStore('userData', $userData);
+        $this->preStore('userActionCountData', $userActionCountData);
         
         $this->view()->assign('actionName', str_replace('Action', '', __FUNCTION__));
         $this->view()->assign('preloadStore', $this->preloadStore);
         
         $this->view()->setTemplate('user');
+        
+//        $clres = clone $this->response;
+//        $clres->setContent("aaaaa");
+//        $clres->send();
+        return $clres;
+        
     }
     
     public function userJsonAction()

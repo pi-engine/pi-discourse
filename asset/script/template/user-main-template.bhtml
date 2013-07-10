@@ -42,14 +42,13 @@
           <div class="clearfix">
           </div>
           <ul class="action-list nav-stacked side-nav">
-            <li id="ember1773" class="ember-view active"><a href="#">All <span class="count">(54)</span><span class="icon-chevron-right"></span></a></li>
-            <li id="ember1793" class="ember-view"><a href="#">Bookmarks <span class="count">(1)</span><span class="icon-chevron-right"></span></a></li>
-            <li id="ember1794" class="ember-view"><a href="#">Topics <span class="count">(5)</span><span class="icon-chevron-right"></span></a></li>
-            <li id="ember1795" class="ember-view"><a href="#">Posts <span class="count">(25)</span><span class="icon-chevron-right"></span></a></li>
-            <li id="ember1796" class="ember-view"><a href="#">Responses <span class="count">(13)</span><span class="icon-chevron-right"></span></a></li>
-            <li id="ember1797" class="ember-view"><a href="#">Likes Given <span class="count">(6)</span><span class="icon-chevron-right"></span></a></li>
-            <li id="ember1798" class="ember-view"><a href="#">Likes Received <span class="count">(3)</span><span class="icon-chevron-right"></span></a></li>
-            <li id="ember1799" class="ember-view"><a href="#">Favorites <span class="count">(1)</span><span class="icon-chevron-right"></span></a></li>
+            <li name="filter" value="4" class="filter ember-view active"><a style="hover:pointer">Favorites <span class="count">(<%= actionCount.star %>)</span><span class="icon-chevron-right"></span></a></li>
+            <li name="filter" value="1" class="filter ember-view"><a style="hover:pointer">Bookmarks <span class="count">(<%= actionCount.bookmark %>)</span><span class="icon-chevron-right"></span></a></li>
+            <li name="filter" value="5" class="filter ember-view"><a style="hover:pointer">Topics <span class="count">(<%= actionCount.topic %>)</span><span class="icon-chevron-right"></span></a></li>
+            <li name="filter" value="6" class="filter ember-view"><a style="hover:pointer">Posts <span class="count">(<%= actionCount.post %>)</span><span class="icon-chevron-right"></span></a></li>
+            <li name="filter" value="7" class="filter ember-view"><a style="hover:pointer">Responses <span class="count">(<%= actionCount.response %>)</span><span class="icon-chevron-right"></span></a></li>
+            <li name="filter" value="2" class="filter ember-view"><a style="hover:pointer">Likes Given <span class="count">(<%= actionCount.like %>)</span><span class="icon-chevron-right"></span></a></li>
+            <li name="filter" value="3" class="filter ember-view"><a style="hover:pointer">Likes Received <span class="count">(<%= actionCount.like_receive %>)</span><span class="icon-chevron-right"></span></a></li>
           </ul>
           <div class="show">
             <dl>
@@ -60,32 +59,42 @@
               <dt>Trust Level:</dt><dd>visitor</dd>
             </dl>
           </div>
-          <div style="margin-top: 10px">
-            <button class="btn" data-not-implemented="true" disabled="" title="That feature hasn't been implemented yet, sorry!">download archive of my posts</button>
-          </div>
         </div>
         <div id="ember1806" class="ember-view">
           <div id="user-stream">
-            <div id="ember1809" class="ember-view">
-              <div id="ember1862" class="ember-view item">
-                <div class="clearfix info">
-                  <a href="/users/liquan" class="avatar-link"><div class="avatar-wrapper"><img width="45" height="45" src="https://www.gravatar.com/avatar/7279e8a33fbe1bd97c365b36bc32fcbb.png?s=45&amp;r=pg&amp;d=identicon" class="avatar actor" title="liquan"></div></a>
-                  <span class="time"><span class="date" title="June 19, 2013 11:23am">3 hours ago</span></span>
-                  <span class="title">
-                    <a href="/t/category-definition-for-category-cc/20/35">Category definition for category cc</a>
-                  </span>
-                  <span class="type">
-                    Posted by
-                  </span>
-                  <a class="name" href="/users/liquan">liquan</a>
-                </div>
-                <p class="excerpt">
-                asfaf [Replace this first paragraphasd with a short dess ssssssssssssss sssscription of your new category. Try to keep it b 
-                </p>
-                <div class="child-actions">
-                  <i class="icon icon-bookmark"></i>
-                  <a href="/users/forumadmin" class="avatar-link"><div class="avatar-wrapper"><img width="20" height="20" src="https://www.gravatar.com/avatar/b30fff48d257cdd17c4437afac19fd30.png?s=20&amp;r=pg&amp;d=identicon" class="avatar actor" title="forumadmin"></div></a>
-                </div>
+            <div class="item" data-bindattr-975="975">
+              <div class="clearfix info">
+                <a href="/users/Sander78" class="avatar-link"><div class="avatar-wrapper"><img width="45" height="45" src="https://www.gravatar.com/avatar/e7069beb46df22270a41afc7b277fe50.png?s=45&amp;r=pg&amp;d=identicon" class="avatar actor" title="Sander78"></div></a>
+                <span class="time"><span class="relative-date date" title="June 19, 2013 1:21pm" data-time="1371619298000" data-format="medium-with-ago">19 Jun</span></span>
+                <span class="title">
+                    <a href="/t/digest-mail-ignores-secure-groups/7288">Digest mail ignores secure groups</a>
+                </span>
+                <span class="type"> Posted by <a href="/users/Sander78">Sander Datema</a></span>
+              </div>
+              <p class="excerpt">
+              People receiving the digest mail can easily read posts not meant for them. That's because the digest mail ignores the secure groups a member has access to or not. Quite a problem as I unfortunately found out. [smile]
+              </p>
+              <div class="child-actions">
+                <i class="icon icon-heart"></i>
+                <a href="/users/liquan" class="avatar-link"><div class="avatar-wrapper"><img width="20" height="20" src="https://www.gravatar.com/avatar/7279e8a33fbe1bd97c365b36bc32fcbb.png?s=20&amp;r=pg&amp;d=identicon" class="avatar actor" title="liquan"></div></a>
+              </div>
+            </div>
+
+            <div class="item" data-bindattr-975="975">
+              <div class="clearfix info">
+                <a href="/users/Sander78" class="avatar-link"><div class="avatar-wrapper"><img width="45" height="45" src="https://www.gravatar.com/avatar/e7069beb46df22270a41afc7b277fe50.png?s=45&amp;r=pg&amp;d=identicon" class="avatar actor" title="Sander78"></div></a>
+                <span class="time"><span class="relative-date date" title="June 19, 2013 1:21pm" data-time="1371619298000" data-format="medium-with-ago">19 Jun</span></span>
+                <span class="title">
+                    <a href="/t/digest-mail-ignores-secure-groups/7288">Digest mail ignores secure groups</a>
+                </span>
+                <span class="type"> Posted by <a href="/users/Sander78">Sander Datema</a></span>
+              </div>
+              <p class="excerpt">
+              People receiving the digest mail can easily read posts not meant for them. That's because the digest mail ignores the secure groups a member has access to or not. Quite a problem as I unfortunately found out. [smile]
+              </p>
+              <div class="child-actions">
+                <i class="icon icon-heart"></i>
+                <a href="/users/liquan" class="avatar-link"><div class="avatar-wrapper"><img width="20" height="20" src="https://www.gravatar.com/avatar/7279e8a33fbe1bd97c365b36bc32fcbb.png?s=20&amp;r=pg&amp;d=identicon" class="avatar actor" title="liquan"></div></a>
               </div>
             </div>
           </div>

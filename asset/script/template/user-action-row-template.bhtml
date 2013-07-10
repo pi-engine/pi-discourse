@@ -1,0 +1,19 @@
+<script type="text/template" id="user-action-row-template">
+  <div class="item">
+    <div class="clearfix info">
+      <a href="/users/Sander78" class="avatar-link"><div class="avatar-wrapper"><img width="45" height="45" src="https://www.gravatar.com/avatar/e7069beb46df22270a41afc7b277fe50.png?s=45&amp;r=pg&amp;d=identicon" class="avatar actor" title="Sander78"></div></a>
+      <span class="time"><span class="relative-date date" title="June 19, 2013 1:21pm" data-time="1371619298000" data-format="medium-with-ago">19 Jun</span></span>
+      <span class="title">
+          <a href="/t/digest-mail-ignores-secure-groups/7288">Digest mail ignores secure groups</a>
+      </span>
+      <span class="type"> Posted by <a href="/users/Sander78">Sander Datema</a></span>
+    </div>
+    <p class="excerpt">
+    People receiving the digest mail can easily read posts not meant for them. That's because the digest mail ignores the secure groups a member has access to or not. Quite a problem as I unfortunately found out. [smile]
+    </p>
+    <div class="child-actions">
+      <i class="icon icon-heart"></i>
+      <a href="/users/liquan" class="avatar-link"><div class="avatar-wrapper"><img width="20" height="20" src="https://www.gravatar.com/avatar/7279e8a33fbe1bd97c365b36bc32fcbb.png?s=20&amp;r=pg&amp;d=identicon" class="avatar actor" title="liquan"></div></a>
+    </div>
+  </div>
+</script>
