@@ -13,11 +13,10 @@ define(["dis"], function(dis){
             initialize: function(userData){
                 this.userData = userData;
                 this.render();
+                this.showItems(5);
             },
             
             render: function(){
-//        console.log(this.userData);
-//                variables = this.getVariables();
                 this.$el.html(_.template( disStorage.templates.userMainTemplate, this.userData));
             },
                     
@@ -26,17 +25,26 @@ define(["dis"], function(dis){
             },
             
             showItems: function(e){
-                console.log(e.currentTarget.value);
-//                console.log("/discourse/userAction/" + disStorage.user.id + "/" + e.currentTarget.value + "/1");
+                var actionType;
+                if (typeof e !== 'object') {
+                    actionType = e;
+                } else {
+                    actionType = e.currentTarget.value;
+                }
+                _.each($(".filter"),function(li){
+                    $(li).removeClass('active');
+                });
+                $(".filter[value=" + actionType + "]").addClass('active');
                 $.ajax({
-                    url: "/discourse/userAction/" + disStorage.user.id + "/" + e.currentTarget.value + "/1",
+                    url: "/discourse/userAction/" + disStorage.targetUser.id + "/" + actionType + "/1",
                     type: 'GET',
                     async: false,
                     success: function(data){
                         data = JSON.parse(data);
-                        console.log(data);
-                        _.each(data, function(action){
-                            
+//                        console.log(data);
+                        $("#user-stream").empty();
+                        _.each(data, function(userAction){
+                            var userActionRow = new action.UserActionRowView(userAction);
                         });
                     }
                 });
@@ -44,21 +52,13 @@ define(["dis"], function(dis){
         }),
         
         UserActionRowView: Backbone.View.extend({
-//            el: $("#main-outlet"),
-            
             initialize: function(actionData){
                 this.actionData = actionData;
                 this.render();
             },
             
             render: function(){
-//        console.log(this.actionData);
-//                variables = this.getVariables();
-                this.$el.html(_.template( disStorage.templates.userActionRowTemplate, this.userData));
-            },
-                    
-            getVariables: function(){
-                return {};
+                $("#user-stream").append(_.template( disStorage.templates.userActionRowTemplate, this.actionData));
             },
         }),
 
@@ -80,14 +80,14 @@ define(["dis"], function(dis){
 //                disStorage.templates.postReplyRowTemplate       = $(template5).html();
 //                disStorage.templates.postReferenceTemplate      = $(template6).html();
  
-                
-                var userData = PreloadStore.data.userData;
-                userData.actionCount = PreloadStore.data.userActionCountData;
-//                console.log(userData);
+
+                disStorage.targetUser = PreloadStore.data.userData;
+                disStorage.targetUser.actionCount = PreloadStore.data.userActionCountData;
+
                 
                 
                 $("#main-outlet").empty();
-                new action.UserMainView(userData);
+                new action.UserMainView(disStorage.targetUser);
             });
         },
     }

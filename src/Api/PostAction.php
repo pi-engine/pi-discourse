@@ -86,6 +86,7 @@ class PostAction extends AbstractApi
                         'action_type'       => $userActionType,
                         'user_id'           => $userData['id'],
                         'target_post_id'    => intval($data['post_id']),
+                        'target_topic_id'   => $postRow->topic_id,
                         'target_user_id'    => intval($postRow->user_id),
                         'time_created'      => time(),
                         'time_updated'      => time(),

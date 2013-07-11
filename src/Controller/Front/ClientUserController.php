@@ -22,10 +22,7 @@ class ClientUserController extends FrontController
         $this->view()->assign('preloadStore', $this->preloadStore);
         
         $this->view()->setTemplate('user');
-        
-//        $clres = clone $this->response;
-//        $clres->setContent("aaaaa");
-//        $clres->send();
+
         return $clres;
         
     }
