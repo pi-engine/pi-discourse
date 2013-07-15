@@ -68,42 +68,9 @@ require(["dis"], function(dis) {
     //load current page script file
     var actionName = $("meta[name=actionName]").attr('content');
 
-    require([
-        'dis',
-        actionName,
-        "text!../template/main-header-template.bhtml"
-    ], function(dis, action, header_template) {
-        disStorage.templates.mainHeaderTemplate = $(header_template).html();
-
-        MainHeaderView = Backbone.View.extend({
-            el: $("#main-header"),
-
-            events: {
-            },
-
-            initialize: function(){
-                this.render();
-            },
-
-            render: function(){
-                variables = this.prepareVariables();
-                var template = _.template( disStorage.templates.mainHeaderTemplate, variables );
-                this.$el.append( template );
-            },
-
-            prepareVariables: function(){
-                return {
-                    user:           disStorage.user,
-                    all_categories: disStorage.categories
-                };
-            }
-        });
-        
-        var mainHeaderView = new MainHeaderView();
-        
-        
-        
+    require(['dis', 'header', actionName], function(dis, header, action) {
         window.action = action;
+        header.run();
         window.action.run();
     //    Backbone.history.start({ pushState: true, root: dis.app.root });
     });
