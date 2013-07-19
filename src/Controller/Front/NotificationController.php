@@ -13,10 +13,10 @@ use Module\Discourse\Lib\DiscourseRestfulController;
  * 
  */
 
-class PostActionController extends DiscourseRestfulController
+class NotificationController extends DiscourseRestfulController
 {
     /**
-     * /postAction/ GET
+     * /notification/ GET
      * 
      */
     public function get($id)
@@ -25,16 +25,16 @@ class PostActionController extends DiscourseRestfulController
     }
     
     /**
-     * /postAction/ POST
+     * /notification/ POST
      * 
      */   
     public function create($data)
     {
-        return json_encode(Pi::service('api')->discourse(array('postAction', 'handle'), $data));
+        throw new \Zend\Mvc\Exception\DomainException('Invalid HTTP method!');
     }
     
     /**
-     * /postAction/{id} PUT
+     * /notification/{id} PUT
      * 
      */
     public function update($id, $parsedParams)
@@ -43,7 +43,7 @@ class PostActionController extends DiscourseRestfulController
     }
     
     /**
-     * /postAction/{id} DELETE
+     * /notification/{id} DELETE
      * 
      */    
     public function delete($id)
@@ -52,14 +52,12 @@ class PostActionController extends DiscourseRestfulController
     }
     
     /**
-     * /postAction/{id}/{num1}/{num2} GET
-     * 
-     * here {num1} isn't $offset anymore, used as $postActionType instead.
+     * /notification/{id}/{num1}/{num2} GET
      * 
      */
-    public function getMulti($postId, $postActionType = 1, $limit = 20)
+    public function getMulti($user_id, $limit)
     {
-//        return json_encode($postId);
+        return json_encode(Pi::service('api')->discourse(array('notification', 'getUnreadNotification'), $user_id));
 //        throw new \Zend\Mvc\Exception\DomainException('Invalid HTTP method!');
     }
 }

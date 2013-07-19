@@ -17,6 +17,8 @@ class FrontController extends ActionController
     
     public $userInfo;
     
+    public $notificationCount;
+    
     public function __construct() {
         $this->preStoreData();
         Pi::service('theme')->setTheme('discourse');
@@ -32,11 +34,14 @@ class FrontController extends ActionController
     
     public function preStoreData()
     {
-//        $this->categories = $this->cc()->allCategories();
-//        $this->userInfo = $this->uc()->getCurrentUserInfo();
         $this->categories   = Pi::service('api')->discourse(array('category', 'allCategories'));
         $this->userInfo     = Pi::service('api')->discourse(array('user', 'getCurrentUserInfo'));
-  
+        if ($this->userInfo['id']) {
+            $this->notificationCount = Pi::service('api')->discourse(array('notification', 'getUnreadCount'), $this->userInfo['id']);
+            $this->preStore('notificationCount', $this->notificationCount);
+//            Pi::service('api')->discourse(array('notification', 'getUnreadNotification'), $this->userInfo['id']);
+        }
+        
         $this->preStore('user', $this->userInfo);
         $this->preStore('categories', $this->categories);
     }

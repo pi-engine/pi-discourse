@@ -63,6 +63,7 @@ class DiscourseRoute extends Standard
                 || 'postAction' === $first 
                 || 'star' === $first 
                 || 'postReply' === $first 
+                || 'notification' === $first 
                 || 0
             ) {
                 $matches['controller']  = $first;

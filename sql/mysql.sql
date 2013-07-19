@@ -202,8 +202,8 @@ CREATE TABLE `{post_action_type}` (
     KEY (`is_flag`)
 )ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
-# DROP TABLE IF EXISTS `notifications`;
-CREATE TABLE `{notifications}` (
+# DROP TABLE IF EXISTS `notification`;
+CREATE TABLE `{notification}` (
     `id`                        INT(10) UNSIGNED    NOT NULL auto_increment,
     `notification_type`         INT(10) UNSIGNED    NOT NULL,
     `user_id`                   INT(10) UNSIGNED    NOT NULL,

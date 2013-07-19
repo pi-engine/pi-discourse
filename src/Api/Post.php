@@ -54,9 +54,15 @@ class Post extends AbstractApi
             'time_created'      => time(),
             'time_updated'      => time(),
         );
-        
+        $notificationData = array(
+            'replied_topic_user_id' => $topicRow->user_id
+        );
+
         if (isset($data['reply_to_post_id'])) {
             $repliedPostRow = $postModel->find(intval($data['reply_to_post_id']));
+            if ($repliedPostRow->user_id != $notificationData['replied_topic_user_id']) {
+                $notificationData['replied_post_user_id'] = $repliedPostRow->user_id;
+            }
             if (!$repliedPostRow->id) {
                 return array( 'err_msg' => "Replied post not exists." );
             } else {
@@ -69,7 +75,6 @@ class Post extends AbstractApi
                 } else {
                     return array( 'err_msg' => "Replied post doesn't exist in that topic." );
                 }
-                $userActionData['target_post_id'] = $replyToPostId;
                 $userActionData['user_id'] = $repliedPostRow->user_id;
             }
         } else {
@@ -79,7 +84,6 @@ class Post extends AbstractApi
             ));
             $postRowSet = $postModel->selectWith($select);
             $postRow = $postRowSet->current();
-            $userActionData['target_post_id'] = $postRow->id;
             $userActionData['user_id'] = $postRow->user_id;
         }
         
@@ -109,10 +113,31 @@ class Post extends AbstractApi
         if (!$postRow->id) {
             return false;
         } else {
+            $userActionData['target_post_id'] = $postRow->id;
             $userActionRow = $userActionModel->createRow($userActionData);
             $userActionRow->save();
-        
+            
+            Pi::service('api')->discourse(
+                array('notification', 'createNotification'),
+                $notificationData['replied_topic_user_id'],
+                $data['topic_id'], 
+                $postRow->post_number, 
+                $topicRow->title,
+                $userData['name']
+            );
+
+            
             if($replyToPostId) {
+                if ($notificationData['replied_post_user_id']) {
+                    Pi::service('api')->discourse(
+                        array('notification', 'createNotification'),
+                        $notificationData['replied_post_user_id'],
+                        $data['topic_id'], 
+                        $postRow->post_number, 
+                        $topicRow->title,
+                        $userData['name']
+                    );
+                }
                 $postReplyModel = \Pi::model('post_reply', 'discourse');
                 $relationData = array(
                                     'post_id'           => $postRow->id,
@@ -391,14 +416,14 @@ class Post extends AbstractApi
                 $topicUserRow->save();
             } else {
                 $topicUserModel->update(
-                                        array(
-                                            'time_last_visited' => time(),
-                                        ),
-                                        array(
-                                            'topic_id'  => $topicId,
-                                            'user_id'   => $userData['id'],
-                                        )
-                                    );
+                    array(
+                        'time_last_visited' => time(),
+                    ),
+                    array(
+                        'topic_id'  => $topicId,
+                        'user_id'   => $userData['id'],
+                    )
+                );
             }
         }
         

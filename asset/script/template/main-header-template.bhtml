@@ -25,6 +25,12 @@
                     <a class="icon" style="cursor:pointor" title="notifications of @name mentions, replies to your posts and topics, private messages, etc">
                         <i class="icon-comment"></i>
                     </a>
+                    <% if (typeof disStorage.notificationCount !== 'undefined' && disStorage.notificationCount > 0) {%>
+                        <a id="unread-notifications-count" href="#" class="badge-notification unread-notifications" style="display:block"><%= disStorage.notificationCount %></a>
+                    <% } else { %>
+                        <a id="unread-notifications-count" href="#" class="badge-notification unread-notifications" style="display:none">0</a>
+                    <% } %>
+                    <!--<a href="#" class="badge-notification unread-private-messages">1</a>-->
                 </li>
                 <li class="dropdown" id="search">
                     <a class="icon expand" style="cursor:pointor" title="search for topics, posts, users, or categories">
@@ -47,10 +53,11 @@
             </div>
             <section class="d-dropdown" id="notifications-dropdown" style="display: none;">
                 <ul>
-                    <li class=""><i class="icon icon-envelope-alt" title="private message"></i> admin <a href="/t/welcome-to-try-discourse/143">Welcome to Try Discourse!</a></li>
-                    <li class="read last">
-                        <a href="/users/liquan" data-bindattr-151="151">view older notifications …</a>
-                    </li>
+                    <div id="unread-notification-container">
+                    </div>
+                    <!--<li class="read last">
+                        <a href="/users/liquan">Refresh</a>
+                    </li>-->
                 </ul>
             </section>
             <section class="d-dropdown" id="site-map-dropdown" style="display: none;">
