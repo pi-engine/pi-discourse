@@ -1,6 +1,6 @@
 /* << replace >>*/
 
-pjax = false;
+pjax = 1;
 var scripts = document.getElementsByTagName("script");
 
 //config requirejs
@@ -30,7 +30,7 @@ require(["dis"], function(dis) {
         categories.add(new dis.Category(category));
     });
     
-    if(pjax) {
+    if (pjax) {
         //enable pjax
         var dis_router = new dis.Router;
 

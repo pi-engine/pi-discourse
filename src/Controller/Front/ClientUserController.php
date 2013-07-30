@@ -29,13 +29,13 @@ class ClientUserController extends FrontController
     
     public function userJsonAction()
     {
-//        $id = $this->params('id');
-//        $topic          = Pi::service('api')->discourse(array('topic', 'getTopic'), $id);
-//        $postsAndUsers  = Pi::service('api')->discourse(array('post', 'getPosts'), $id);
-//
-//        return json_encode(array(
-//            'topic' => $topic, 
-//            'postsAndUsers' => $postsAndUsers
-//        ));
+        $id = $this->params('id');
+        $userData = Pi::service('api')->discourse(array('user', 'get'), $id);
+        $userActionCountData = Pi::service('api')->discourse(array('userAction', 'getUserActionCount'), $id);
+        
+        return json_encode(array(
+            'userData'              => $userData,
+            'userActionCountData'   => $userActionCountData
+        ));
     }
 }

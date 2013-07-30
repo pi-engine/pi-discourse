@@ -67,23 +67,30 @@ define(["dis"], function(dis){
             require([
                 "text!../template/user-main-template.bhtml", 
                 "text!../template/user-action-row-template.bhtml",
-//                "text!../template/post-create-template.bhtml",
-//                "text!../template/post-reply-container-template.bhtml",
-//                "text!../template/post-reply-row-template.bhtml",
-//                "text!../template/post-reference-template.bhtml"
             ], 
             function(template1, template2, template3, template4, template5, template6 ){
                 disStorage.templates.userMainTemplate           = $(template1).html();
                 disStorage.templates.userActionRowTemplate      = $(template2).html();
-//                disStorage.templates.postCreateTemplate         = $(template3).html();
-//                disStorage.templates.postReplyContainerTemplate = $(template4).html();
-//                disStorage.templates.postReplyRowTemplate       = $(template5).html();
-//                disStorage.templates.postReferenceTemplate      = $(template6).html();
- 
+                
+                if (PreloadStore.data) {
+                    disStorage.targetUser = PreloadStore.data.userData;
+                    disStorage.targetUser.actionCount = PreloadStore.data.userActionCountData;
+                } else {
+                    console.log('request for data');
+                    $.ajax({
+                        url: '/discourse/u/' + id + '.json',
+                        type: 'GET',
+                        async: false,
+                        success: function(data){
+                            data = JSON.parse(data);
+//                            console.log(data);
+                            
+                            disStorage.targetUser = data.userData;
+                            disStorage.targetUser.actionCount = data.userActionCountData;
 
-                disStorage.targetUser = PreloadStore.data.userData;
-                disStorage.targetUser.actionCount = PreloadStore.data.userActionCountData;
-
+                        }
+                    });
+                }
                 
                 
                 $("#main-outlet").empty();

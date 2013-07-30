@@ -11,11 +11,11 @@
 
             <div class="topic-meta-data span2">
                 <div class="contents">
-                    <a href="/u/<%= user_id %>">
+                    <a href="/discourse/u/<%= user_id %>">
                         <img width="45" height="45" src="https://www.gravatar.com/avatar/<%= userInfo.get('avatar') %>.png?s=45&r=pg&d=identicon" class="avatar" title="<%= userInfo.get('name') %>" />
                     </a>
                     <h3 class="moderator">
-                        <a href="/u/<%= user_id %>"><%= userInfo.get('name') %></a>
+                        <a href="/discourse/u/<%= user_id %>"><%= userInfo.get('name') %></a>
                     </h3>
                     <div class="post-info">
                         <a href="#" class="post-date">

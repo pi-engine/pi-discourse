@@ -73,7 +73,8 @@ define({
             ""          : "categoryList",
             "c"         : "categoryList",
             "c/:id"     : "category",
-            "t/:id"     : "topic"
+            "t/:id"     : "topic",
+            "u/:id"     : "user"
         },
         categoryList: function(){
             console.log( "Going to category list" );
@@ -97,6 +98,15 @@ define({
             console.log( "Going to topic " + id );
             
             require(["topic"], function(action) {
+                window.action = action;
+                window.action.run(id);
+            });
+        },
+        user: function(id){
+            // Note the variable in the route definition being passed in here
+            console.log( "Going to user " + id );
+            
+            require(["user"], function(action) {
                 window.action = action;
                 window.action.run(id);
             });

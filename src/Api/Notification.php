@@ -66,7 +66,7 @@ class Notification extends AbstractApi
     }
     
     public function markNotificationReadByTopic($user_id, $topic_id)
-    {d(11);
+    {
         $notificationModel = \Pi::model('notification', 'discourse');
         $notificationModel->update(
             array(
