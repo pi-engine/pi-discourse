@@ -1,6 +1,11 @@
 /* << replace >>*/
 
 pjax = 1;
+
+if (typeof window.history.pushState === 'undefined') {
+    pjax = 0;
+}
+
 var scripts = document.getElementsByTagName("script");
 
 //config requirejs
@@ -13,6 +18,9 @@ require(["dis"], function(dis) {
     disStorage = {};
     
     disStorage.user         = new dis.User(PreloadStore.data.user);
+    console.log(PreloadStore.data.user.email);
+    console.log(PreloadStore.data.user.id);
+    console.log(disStorage.user.get('id'));
     disStorage.categories   = new dis.Categories;
     disStorage.users        = new dis.Users;
     
@@ -69,8 +77,8 @@ require(["dis"], function(dis) {
     var actionName = $("meta[name=actionName]").attr('content');
 
     require(['dis', 'header', actionName], function(dis, header, action) {
-        window.action = action;
         header.run();
+        window.action = action;
         window.action.run();
     //    Backbone.history.start({ pushState: true, root: dis.app.root });
     });

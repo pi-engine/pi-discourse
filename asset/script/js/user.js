@@ -75,6 +75,7 @@ define(["dis"], function(dis){
                 if (PreloadStore.data) {
                     disStorage.targetUser = PreloadStore.data.userData;
                     disStorage.targetUser.actionCount = PreloadStore.data.userActionCountData;
+                    PreloadStore.data = null;
                 } else {
                     console.log('request for data');
                     $.ajax({
