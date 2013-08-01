@@ -122,11 +122,11 @@ class Topic extends AbstractApi
     public function createTopic($data)
     {
         $userData = Pi::service('api')->discourse(array('user', 'getCurrentUserInfo'));
-        if($userData['isguest']) {
+        if ($userData['isguest']) {
             return array( 'err_msg' => "You haven't logged in." );
         }
         
-        if(isset($data['category_id'])){
+        if (isset($data['category_id'])) {
             $categoryModel = \Pi::model('category', 'discourse');
             $categoryRow = $categoryModel->find(intval($data['category_id']));
             if(!$categoryRow->id) {
@@ -137,7 +137,7 @@ class Topic extends AbstractApi
         }
         
         // here should add content checking 
-        if('' === trim($data['content_raw'])) {
+        if ('' === trim($data['content_raw'])) {
             return array( 'err_msg' => "Content is not valid." );
         }
         $contentRaw = $data['content_raw'];
@@ -232,7 +232,7 @@ class Topic extends AbstractApi
         }
     }
     
-    /*
+    /**
      * Delete a topic and it's posts
      * 
      * @param  mixed $id

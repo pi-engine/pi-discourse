@@ -18,9 +18,6 @@ require(["dis"], function(dis) {
     disStorage = {};
     
     disStorage.user         = new dis.User(PreloadStore.data.user);
-    console.log(PreloadStore.data.user.email);
-    console.log(PreloadStore.data.user.id);
-    console.log(disStorage.user.get('id'));
     disStorage.categories   = new dis.Categories;
     disStorage.users        = new dis.Users;
     

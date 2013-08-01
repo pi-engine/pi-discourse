@@ -197,7 +197,7 @@ class Post extends AbstractApi
         }
     }
 
-    /*
+    /**
      * Delete a post
      * 
      * maybe should make a post invisable instead of delete it.
