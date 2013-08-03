@@ -10,3 +10,7 @@ Before using pi-discour module, user should cut `usr/module/discourse/template/d
 You can switch pjax on or off by changing line 3 in `/asset/script/js/boot.js`,
 on: `pjax = 1;` 
 off: `pjax = 0;`
+
+using master branch and version of may 30, 2013. Cause latest version can't return json in discourse's restful controller, will debug later.
+
+`git checkout e27afda228cab6abe8e124dca35a784a49877cdb`
