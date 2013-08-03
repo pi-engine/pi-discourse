@@ -13,7 +13,7 @@ class ClientCategoryController extends FrontController
         $topics = Pi::service('api')->discourse(array('category', 'allTopTopics'), $this->categories);
         $this->preStore('categoryTopics', $topics);
         
-        $this->view()->assign('actionName', str_replace('Action', '', __FUNCTION__));
+        $this->view()->assign('controllerName', str_replace('Action', '', __FUNCTION__));
         $this->view()->assign('preloadStore', $this->preloadStore);
         $this->view()->setTemplate('category-list');
     }
@@ -24,7 +24,7 @@ class ClientCategoryController extends FrontController
         $topics = Pi::service('api')->discourse(array('topic', 'getTopics'), $id);
         $this->preStore('topics', $topics);
         
-        $this->view()->assign('actionName', str_replace('Action', '', __FUNCTION__));
+        $this->view()->assign('controllerName', str_replace('Action', '', __FUNCTION__));
         $this->view()->assign('preloadStore', $this->preloadStore);
         $this->view()->setTemplate('category');
     }

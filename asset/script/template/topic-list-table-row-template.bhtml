@@ -1,6 +1,6 @@
 <script type="text/template" id="topic-list-table-row-template">
     <tr class="ember-view topic-list-item" id="topic-<%= id %>" identity="<%= id %>" pinned="<%= pinned %>" isVisible="<%= isVisible %>" closed="<%= closed %>">
-        <% if (!disStorage.user.get('isguest')) { %>
+        <% if (!require('storage/appStorage').user.get('isguest')) { %>
             <td class="star">
                 <% if (starred == 0) { %>
                     <a class="star icon-star" style="cursor:pointer" title="add this topic to your favorites list"></a>

@@ -25,8 +25,8 @@
                     <a class="icon" style="cursor:pointor" title="notifications of @name mentions, replies to your posts and topics, private messages, etc">
                         <i class="icon-comment"></i>
                     </a>
-                    <% if (typeof disStorage.notificationCount !== 'undefined' && disStorage.notificationCount > 0) {%>
-                        <a id="unread-notifications-count" href="#" class="badge-notification unread-notifications" style="display:block"><%= disStorage.notificationCount %></a>
+                    <% if (typeof appStorage.notificationCount !== 'undefined' && appStorage.notificationCount > 0) {%>
+                        <a id="unread-notifications-count" href="#" class="badge-notification unread-notifications" style="display:block"><%= appStorage.notificationCount %></a>
                     <% } else { %>
                         <a id="unread-notifications-count" href="#" class="badge-notification unread-notifications" style="display:none">0</a>
                     <% } %>

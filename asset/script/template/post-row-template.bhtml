@@ -5,8 +5,8 @@
             <div class="read-icon seen" title=""></div>
             <% if( reply_to_post_id ) { %>
                 <a id="post-<%= id %>-reference-toggler" name="post-reference-toggler" value="<%= id %>" style="cursor:pointer" data-ember-action="1678" class="reply-to-tab">
-                in reply to<img width="20" height="20" src="https://www.gravatar.com/avatar/<%= disStorage.users.get(disStorage.posts.get(reply_to_post_id).get('user_id')).get('avatar') %>.png?s=20&r=pg&d=identicon" class="avatar " title="<%= disStorage.users.get(disStorage.posts.get(reply_to_post_id).get('user_id')).get('name') %>">
-                <%= disStorage.users.get(disStorage.posts.get(reply_to_post_id).get('user_id')).get('name') %></a>
+                in reply to<img width="20" height="20" src="https://www.gravatar.com/avatar/<%= appStorage.users.get(appStorage.posts.get(reply_to_post_id).get('user_id')).get('avatar') %>.png?s=20&r=pg&d=identicon" class="avatar " title="<%= appStorage.users.get(appStorage.posts.get(reply_to_post_id).get('user_id')).get('name') %>">
+                <%= appStorage.users.get(appStorage.posts.get(reply_to_post_id).get('user_id')).get('name') %></a>
             <% } %>
 
             <div class="topic-meta-data span2">

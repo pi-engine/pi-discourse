@@ -25,9 +25,7 @@ class ClientTopicController extends FrontController
         $this->preStore('topic', $topic);
         $this->preStore('postsAndUsers', $postsAndUsers);
         
-
-        
-        $this->view()->assign('actionName', str_replace('Action', '', __FUNCTION__));
+        $this->view()->assign('controllerName', str_replace('Action', '', __FUNCTION__));
         $this->view()->assign('preloadStore', $this->preloadStore);
         
         $this->view()->setTemplate('topic');

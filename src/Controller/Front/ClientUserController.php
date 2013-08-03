@@ -18,7 +18,7 @@ class ClientUserController extends FrontController
         $this->preStore('userData', $userData);
         $this->preStore('userActionCountData', $userActionCountData);
         
-        $this->view()->assign('actionName', str_replace('Action', '', __FUNCTION__));
+        $this->view()->assign('controllerName', str_replace('Action', '', __FUNCTION__));
         $this->view()->assign('preloadStore', $this->preloadStore);
         
         $this->view()->setTemplate('user');

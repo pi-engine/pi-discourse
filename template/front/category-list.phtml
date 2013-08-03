@@ -1,11 +1,15 @@
 <?php
     $this->jQuery();
     $this->backbone();
-    $this->js($this->asset('module/discourse', 'script/js/preload_store.js'));
-    $this->js($this->asset('module/discourse', 'script/js/require.js'));
-    $this->js($this->asset('module/discourse', 'script/js/boot.js'));
-    $this->js($this->asset('module/discourse', 'script/ckeditor/ckeditor.js'));
-    $this->headMeta()->appendName('actionName', $this->actionName);
+    $this->js($this->asset('module/discourse', 'script/preload_store.js'));
+    $this->js($this->asset('module/discourse', 'script/vendor/requirejs/require.js'));
+    $this->js($this->asset('module/discourse', 'script/vendor/ckeditor/ckeditor.js'));
+    $this->js($this->asset('module/discourse', 'script/app.js'));
+    $this->headMeta()->appendName('controllerName', $this->controllerName);
+    $this->headMeta()->appendName(
+        'requireBase',
+        Pi::service('asset')->getModuleAsset('script/', 'discourse', false)
+    );
 ?>
 <script type="text/javascript">
    <?php echo $this->preloadStore;?>
