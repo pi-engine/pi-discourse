@@ -13,4 +13,4 @@ off: `pjax = 0;`
 
 using master branch and version of may 30, 2013. Cause latest version can't return json in discourse's restful controller, will debug later.
 
-`git checkout e27afda228cab6abe8e124dca35a784a49877cdb`
+Pi version: `git checkout e27afda228cab6abe8e124dca35a784a49877cdb`
