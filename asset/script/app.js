@@ -1,16 +1,10 @@
 /* << replace >>*/
 
-pjax = 1;
-
-if (typeof window.history.pushState === 'undefined') {
-    pjax = 0;
-}
-
-var requireBase = $("meta[name=requireBase]").attr('content');
+//var requireBase = $("meta[name=requireBase]").attr('content');
 
 //config requirejs
 require.config({
-    baseUrl: requireBase
+    baseUrl: $("meta[name=requireBase]").attr('content')
 });
 
 
@@ -21,8 +15,16 @@ require([
     'model/Category', 
     'collection/UserCollection', 
     'collection/CategoryCollection', 
+//    'controller/header',
+//    'controller/categoryList',
+//    'controller/category',
+//    'controller/topic',
+//    'controller/user',
 ], 
-function(appStorage, Router, UserModel, CategoryModel, UserCollection, CategoryCollection) {
+function(appStorage, Router, UserModel, 
+    CategoryModel, UserCollection, CategoryCollection
+//    , header, categoryList, category, topic, user
+) {
     
     appStorage.user         = new UserModel(PreloadStore.data.user);
     appStorage.categories   = new CategoryCollection;
@@ -33,6 +35,13 @@ function(appStorage, Router, UserModel, CategoryModel, UserCollection, CategoryC
     });
     appStorage.templates = {};
     
+    
+    pjax = 1;
+
+    if (typeof window.history.pushState === 'undefined') {
+        pjax = 0;
+    }
+
     if (pjax) {
         //enable pjax
         router = new Router;
