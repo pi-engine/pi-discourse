@@ -15,7 +15,9 @@ class ClientCategoryController extends FrontController
         
         $this->view()->assign('controllerName', str_replace('Action', '', __FUNCTION__));
         $this->view()->assign('preloadStore', $this->preloadStore);
-        $this->view()->setTemplate('category-list');
+        
+        $this->view()->setLayout('layout-content');
+        $this->view()->setTemplate('discourse');
     }
     
     public function categoryAction()
@@ -26,7 +28,9 @@ class ClientCategoryController extends FrontController
         
         $this->view()->assign('controllerName', str_replace('Action', '', __FUNCTION__));
         $this->view()->assign('preloadStore', $this->preloadStore);
-        $this->view()->setTemplate('category');
+        
+        $this->view()->setLayout('layout-content');
+        $this->view()->setTemplate('discourse');
     }
     
     public function categoryJsonAction()

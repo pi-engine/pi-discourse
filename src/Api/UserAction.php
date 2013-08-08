@@ -36,6 +36,10 @@ class UserAction extends AbstractApi
     
     const ACTION_FILTER_RESPONSE    = 7;
 
+    /**
+     * wonder if should remove join
+     * 
+     */
     function getUserAction($user_id, $filter, $page)
     {
 //        return $this->getUserActionCount($user_id);

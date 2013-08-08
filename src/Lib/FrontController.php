@@ -21,7 +21,6 @@ class FrontController extends ActionController
     
     public function __construct() {
         $this->preStoreData();
-        Pi::service('theme')->setTheme('discourse');
     }
     
     public function preStore($offset, $data)
