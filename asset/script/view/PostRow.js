@@ -104,82 +104,48 @@ define([
             };
         },
 
-        like: function(e){
-            var status = 1;
-            $.ajax({
-                url: '/discourse/postAction',
-                type: 'POST',
-                data: {
-                    post_id: e.currentTarget.value,
-                    post_action_type_id: 2,
-                    status: status
-                },
-                async: false,
-                success: function(data){
-                    data = JSON.parse(data);
-                    console.log(data);
-                    if( typeof data.postAction.post_action_type_id !== 'undefined') {
-                        $("button#btn-like-" + data.postAction.post_id).css('display', 'none');
-                        $("span#post-like-count-" + data.postAction.post_id).html(data.post.like_count);
-                        $("a#post-unlike-" + data.postAction.post_id).css('display', 'inline');
+        like: function(){
+            this.model.like().done(function(data){
+                data = JSON.parse(data);
+                if( typeof data.postAction.post_action_type_id !== 'undefined') {
+                    require('storage/appStorage').posts.get(data.post.id).set('isLiked', 1);
+                    $("button#btn-like-" + data.postAction.post_id).css('display', 'none');
+                    $("span#post-like-count-" + data.postAction.post_id).html(data.post.like_count);
+                    $("a#post-unlike-" + data.postAction.post_id).css('display', 'inline');
+                    $("div#like-status-" + data.postAction.post_id).css('display', 'inline');
+                }
+            });
+        },
+
+        unlike: function(){
+            this.model.unlike().done(function(data){
+                data = JSON.parse(data);
+                console.log(data);
+                if( typeof data.postAction.post_action_type_id === 'undefined') {
+                    require('storage/appStorage').posts.get(data.post.id).set('isLiked', 0);
+
+                    $("button#btn-like-" + data.postAction.post_id).css('display', 'inline');
+                    $("a#post-unlike-" + data.postAction.post_id).css('display', 'none');
+                    $("span#post-like-count-" + data.postAction.post_id).html(data.post.like_count);
+                    if (data.post.like_count > 0) {
                         $("div#like-status-" + data.postAction.post_id).css('display', 'inline');
-                    }
-                }
-            });
-        },
-
-        unlike: function(e){
-            var post_id = e.currentTarget.getAttribute('value');
-            var status = 0;
-            $.ajax({
-                url: '/discourse/postAction',
-                type: 'POST',
-                data: {
-                    post_id: post_id,
-                    post_action_type_id: 2,
-                    status: status
-                },
-                async: false,
-                success: function(data){
-                    data = JSON.parse(data);
-                    console.log(data);
-                    if( typeof data.postAction.post_action_type_id === 'undefined') {
-                        $("button#btn-like-" + data.postAction.post_id).css('display', 'inline');
-                        $("a#post-unlike-" + data.postAction.post_id).css('display', 'none');
-                        $("span#post-like-count-" + data.postAction.post_id).html(data.post.like_count);
-                        if (data.post.like_count > 0) {
-                            $("div#like-status-" + data.postAction.post_id).css('display', 'inline');
-                        } else {
-                            $("div#like-status-" + data.postAction.post_id).css('display', 'none');
-                        }
-                    }
-                }
-            });
-        },
-
-        bookmark: function(e){
-            var status;
-            if ($(e.currentTarget).find("i").hasClass('icon-bookmark')) {
-                status = 0;
-            } else {
-                status = 1;
-            }
-            $.ajax({
-                url: '/discourse/postAction',
-                type: 'POST',
-                data: {
-                    post_id: e.currentTarget.value,
-                    post_action_type_id: 1,
-                    status: status
-                },
-                async: false,
-                success: function(data){
-                    data = JSON.parse(data);
-                    if( typeof data.postAction.post_action_type_id === 'undefined') {
-                        $("button[name='btn-bookmark'][value=" + data.postAction.post_id + "] i").removeClass().addClass('icon-bookmark-empty');
                     } else {
-                        $("button[name='btn-bookmark'][value=" + data.postAction.post_id + "] i").removeClass().addClass('icon-bookmark');
+                        $("div#like-status-" + data.postAction.post_id).css('display', 'none');
                     }
+                }
+            });
+        },
+
+        bookmark: function(){
+            console.log(this.model);
+            this.model.bookmark().done(function(data){
+                data = JSON.parse(data);
+                if( typeof data.postAction.post_action_type_id === 'undefined') {
+                    require('storage/appStorage').posts.get(data.post.id).set('isBookmarked', 0);
+                    $("button[name='btn-bookmark'][value=" + data.postAction.post_id + "] i").removeClass().addClass('icon-bookmark-empty');
+                } else {
+                    require('storage/appStorage').posts.get(data.post.id).set('isBookmarked', 1);
+                    $("button[name='btn-bookmark'][value=" + data.postAction.post_id + "] i").removeClass().addClass('icon-bookmark');
                 }
             });
         }
