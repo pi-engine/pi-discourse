@@ -228,7 +228,10 @@ class Topic extends AbstractApi
         
             $topicModel->update($data, array('id' => $id));
 
-            return true;
+            //return true;
+
+            $newData = $topicModel->find($id)->toArray();
+            return $newData;
         }
     }
     

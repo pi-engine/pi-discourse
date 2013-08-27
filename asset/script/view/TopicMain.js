@@ -1,8 +1,13 @@
 define([
     "storage/appStorage", 
     "view/PostRow",
-    "view/PostCreate"
-],function(appStorage, PostRowView, PostCreateView){
+    "view/PostCreate",
+    "view/TopicTitle",
+    "view/TopicTitleEdit",
+    "text!template/topic-title-template.html",
+    "text!template/topic-title-edit-template.html"
+],function(appStorage, PostRowView, PostCreateView,
+           TopicTitleView, TopicTitleEditView, template7, template8){
    return Backbone.View.extend({
         el: $("#main-outlet"),
 
@@ -13,6 +18,7 @@ define([
 
         initialize: function(){
             this.render();
+            this.run0();
             appStorage.posts.each(function(post){
                 post.set("view", new PostRowView({
                     model: post,
@@ -55,6 +61,16 @@ define([
                 topicController.postCreateView.model = appStorage.currentTopic;
                 topicController.postCreateView.render();
             }
+        },
+
+        run0: function(){
+            appStorage.templates.topicTitleTemplate         = $(template7).html();
+            appStorage.templates.topicTitleEditTemplate     = $(template8).html();
+
+            appStorage.currentTopic.set("titleView", new TopicTitleView(appStorage.currentTopic));
+            appStorage.currentTopic.set("titleEditView", new TopicTitleEditView(appStorage.currentTopic));
+            appStorage.currentTopic.get("titleView").render();
+            //new TopicTitleEditView(appStorage.currentTopic);
         },
     })
 });

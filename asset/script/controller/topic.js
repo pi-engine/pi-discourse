@@ -156,7 +156,7 @@ function(appStorage, User, Topic, Post, PostCollection, TopicMainView,
                         var Post            = require('model/Post');
                         var PostCollection  = require('collection/PostCollection');
                         
-                        data = JSON.parse(data);
+                        var data = JSON.parse(data);
 //                            console.log(data);
 
                         appStorage.currentTopic = new Topic(data.topic);

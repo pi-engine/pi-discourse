@@ -131,7 +131,7 @@ class User extends AbstractApi
                     'isguest'   => true,
                 );
         if (Pi::service('authentication')->hasIdentity()) {
-            $piAccountInfo = Pi::registry('user');
+            $piAccountInfo = Pi::service('user')->getUser();
             $piAccountId = $piAccountInfo->account->id;
             $userData = $this->getUserInfo($piAccountId);
             if(!$userData) {
@@ -147,6 +147,7 @@ class User extends AbstractApi
                         'email'     => $userData['email'],
                         'name'      => $userData['name'],
                         'avatar'    => $userData['avatar'],
+                        'admin'     => intval($userData['admin']),
                         'isguest'   => false,
                     );
             return $result;

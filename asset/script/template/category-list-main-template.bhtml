@@ -10,9 +10,11 @@
                     <a href="/discourse/c">Cagetories</a>
                 </li>
             </ul>
+            <% if (require('storage/appStorage').user.get('admin')) { %>
             <button class="btn btn-default" id="btn-create-new-category">
                 <i class="icon icon-plus"></i>Create Category
             </button>
+            <% } %>
         </div>
     </div>
     <div class="container" id="d-container">
