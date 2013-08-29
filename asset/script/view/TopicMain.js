@@ -5,9 +5,10 @@ define([
     "view/TopicTitle",
     "view/TopicTitleEdit",
     "text!template/topic-title-template.html",
-    "text!template/topic-title-edit-template.html"
+    "text!template/topic-title-edit-template.html",
 ],function(appStorage, PostRowView, PostCreateView,
-           TopicTitleView, TopicTitleEditView, template7, template8){
+           TopicTitleView, TopicTitleEditView,
+           template7, template8){
    return Backbone.View.extend({
         el: $("#main-outlet"),
 
@@ -70,7 +71,6 @@ define([
             appStorage.currentTopic.set("titleView", new TopicTitleView(appStorage.currentTopic));
             appStorage.currentTopic.set("titleEditView", new TopicTitleEditView(appStorage.currentTopic));
             appStorage.currentTopic.get("titleView").render();
-            //new TopicTitleEditView(appStorage.currentTopic);
         },
     })
 });

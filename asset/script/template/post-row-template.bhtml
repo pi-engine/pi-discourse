@@ -35,7 +35,9 @@
                             <button name="post-reply-toggler" class="show-replies" value="<%= id %>"><span class="badge-posts"><%= reply_count %></span>Replies<i class="icon icon-chevron-down"></i></button>
                         <% } %>
                         <nav class="post-controls">
-                            <button id="btn-like-<%= id %>" name="btn-like" value="<%= id %>" style="display:<% if (typeof is_liked !== 'undefined') { %>none<% } else { %>inline<% } %>" title="like this post" class="like">
+                            <button id="btn-edit-<%= id %>" name="btn-edit" value="<%= id %>" title="edit this post" class="edit">
+                                <i class="icon-pencil"></i>
+                            </button><button id="btn-like-<%= id %>" name="btn-like" value="<%= id %>" style="display:<% if (typeof is_liked !== 'undefined') { %>none<% } else { %>inline<% } %>" title="like this post" class="like">
                                 <i class="icon-heart"></i>
                             </button><button title="flag this post for attention or send a notification about it">
                                 <i class="icon-flag"></i>

@@ -156,81 +156,9 @@ class DiscourseRoute extends Standard
             } else {
                 return null;
             }
-            
-            
-            
-            
-//            if ('category' === $first) {
-//                if ($fourth) {
-//                    if ($request->isGet()
-//                            && is_numeric($second) 
-//                            && is_numeric($fourth) 
-//                            && is_numeric($third)) {
-//                        $matches['id'] = $second;
-//                        $matches['offset'] = $third;
-//                        $matches['limit'] = $fourth;
-//                        $matches['controller'] = 'category';
-//                        $matches['action']     = 'getTopics';
-//                    } else {
-//                        return null;
-//                    }
-//                } else if ($second) {
-//                    if ($request->isGet() && is_numeric($second)) {
-//                        $matches['id'] = $second;
-//                        $matches['controller'] = 'category';
-//                        $matches['action']     = 'getCategoryInfo';
-//                        unset($params[0]);
-//                    } else {
-//                       return null;
-//                    }
-//                } else if (!$second) {
-//                    if ($request->isGet()) {
-//                        $matches['controller'] = 'category';
-//                        $matches['action']     = 'allCategories';
-//                    }
-//                }
-//            } else if ('topic' === $first) {
-//                if ($second) {
-//                    if (is_numeric($second)) {
-//                        if ($method == 'GET') {
-//                            $matches['id'] = $second;
-//                            $matches['controller'] = 'topic';
-//                            $matches['action']     = 'getTopic';
-//                        } else if ($method == 'PUT') {
-//                            $matches['id'] = $second;
-//                            $matches['controller'] = 'topic';
-//                            $matches['action']     = 'updateTopic';
-//                        } else if ($method == 'DELETE') {
-//                            $matches['id'] = $second;
-//                            $matches['controller'] = 'topic';
-//                            $matches['action']     = 'deleteTopic';
-//                        } else {
-//                            return null;
-//                        }
-//                    } else {
-//                        return null;
-//                    }
-//                    
-//                } else {
-//                    if ($method == 'POST') {
-//                        $matches['controller'] = 'topic';
-//                        $matches['action']     = 'createTopic';
-//                    } else {
-//                        return null;
-//                    }
-//                }
-//            } else if ('user' === $first) {
-//                $matches['controller'] = 'user';
-//                $matches['action'] = null;
-//            } else {
-//                return null;
-//            }
-            
-            //if (!empty($params)) {
-            //    return null;
-            //}
+
         }
-//        d(array_merge($this->defaults, $matches));
+//        var_dump(array_merge($this->defaults, $matches));
         return new RouteMatch(array_merge($this->defaults, $matches), $pathLength);
     }
 

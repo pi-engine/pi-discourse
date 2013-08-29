@@ -2,8 +2,12 @@ define([
     "storage/appStorage", 
     "view/PostCreate", 
     "view/PostReference", 
-    "view/PostReplyContainer", 
-],function(appStorage, PostCreateView, PostReferenceView, PostReplyContainerView){
+    "view/PostReplyContainer",
+    "view/PostEdit",
+    "text!template/post-edit-template.html"
+],function(appStorage, PostCreateView, PostReferenceView,
+           PostReplyContainerView, PostEditView,
+           template1){
    return Backbone.View.extend({
         className: "ember-view topic-post clearfix regular",
 
@@ -17,7 +21,31 @@ define([
             "click a[name='post-reference-toggler']":   "toggleReference",
             "click button[name='btn-bookmark']":        "bookmark",
             "click button[name='btn-like']":            "like",
-            "click a[name='post-unlike']":              "unlike"
+            "click a[name='post-unlike']":              "unlike",
+            "click button[name='btn-edit']":            "edit"
+        },
+
+        edit: function(e){
+            appStorage.templates.postEditTemplate = $(template1).html();
+
+
+//            console.log(e.currentTarget.value);
+//            var a = new PostEditView();
+//            a.model = appStorage.posts.get(e.currentTarget.value);
+//            a.render();
+
+            //appStorage.templates.postEditTemplate = $(template1).html();
+//            var PostCreateView = require("view/PostCreate");
+//            var a = new PostCreateView();
+//            a.model = appStorage.posts.get(e.currentTarget.value);
+//            a.render();
+
+            if ($("#edit-control").length === 0) {
+                var topicController = require('controller/topic');
+                topicController.postEditView = topicController.postEditView || new PostEditView();
+                topicController.postEditView.model = appStorage.posts.get(e.currentTarget.value);
+                topicController.postEditView.render();
+            }
         },
 
         showReplyWindow: function(e){
@@ -28,6 +56,7 @@ define([
                 topicController.postCreateView.render();
             }
         },
+
         render: function(){
             var variables = this.getVariables(this.model);
             this.$el.html(_.template(appStorage.templates.postRowTemplate, variables));
