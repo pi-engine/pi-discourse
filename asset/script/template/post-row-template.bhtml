@@ -1,68 +1,68 @@
 <script type="text/template" id="post-row-template">
-    <div id="post-<%= id %>" identity="<%= id %>" class="ember-view topic-post clearfix regular">
-        <div id="post-<%= id %>-reference-container" class="row"></div>
-        <article class="boxed" id="post_1">
-            <div class="row">
-                <div class="read-icon seen" title=""></div>
-                <% if( reply_to_post_id ) { %>
-                    <a id="post-<%= id %>-reference-toggler" value="<%= id %>" style="cursor:pointer" data-ember-action="1678" class="reply-to-tab">
-                    in reply to<img width="20" height="20" src="https://www.gravatar.com/avatar/<%= disStorage.users.get(disStorage.posts.get(reply_to_post_id).get('user_id')).get('avatar') %>.png?s=20&r=pg&d=identicon" class="avatar " title="<%= disStorage.users.get(disStorage.posts.get(reply_to_post_id).get('user_id')).get('name') %>">
-                    <%= disStorage.users.get(disStorage.posts.get(reply_to_post_id).get('user_id')).get('name') %></a>
-                <% } %>
-                
-                <div class="topic-meta-data span2">
-                    <div class="contents">
-                        <a href="/u/<%= user_id %>">
-                            <img width="45" height="45" src="https://www.gravatar.com/avatar/<%= userInfo.get('avatar') %>.png?s=45&r=pg&d=identicon" class="avatar" title="<%= userInfo.get('name') %>" />
+    <div id="post-<%= id %>-reference-container" class="row"></div>
+    <article class="boxed" id="post_1">
+        <div class="row">
+            <div class="read-icon seen" title=""></div>
+            <% if( reply_to_post_id ) { %>
+                <a id="post-<%= id %>-reference-toggler" name="post-reference-toggler" value="<%= id %>" style="cursor:pointer" data-ember-action="1678" class="reply-to-tab">
+                in reply to<img width="20" height="20" src="https://www.gravatar.com/avatar/<%= appStorage.users.get(appStorage.posts.get(reply_to_post_id).get('user_id')).get('avatar') %>.png?s=20&r=pg&d=identicon" class="avatar " title="<%= appStorage.users.get(appStorage.posts.get(reply_to_post_id).get('user_id')).get('name') %>">
+                <%= appStorage.users.get(appStorage.posts.get(reply_to_post_id).get('user_id')).get('name') %></a>
+            <% } %>
+
+            <div class="topic-meta-data span2">
+                <div class="contents">
+                    <a href="/discourse/u/<%= user_id %>">
+                        <img width="45" height="45" src="https://www.gravatar.com/avatar/<%= userInfo.get('avatar') %>.png?s=45&r=pg&d=identicon" class="avatar" title="<%= userInfo.get('name') %>" />
+                    </a>
+                    <h3 class="moderator">
+                        <a href="/discourse/u/<%= user_id %>"><%= userInfo.get('name') %></a>
+                    </h3>
+                    <div class="post-info">
+                        <a href="#" class="post-date">
+                            <span class="date" title="<%= time_created %>"><%= time_from_created %></span>
                         </a>
-                        <h3 class="moderator">
-                            <a href="/u/<%= user_id %>"><%= userInfo.get('name') %></a>
-                        </h3>
-                        <div class="post-info">
-                            <a href="#" class="post-date">
-                                <span class="date" title="<%= time_created %>"><%= time_from_created %></span>
-                            </a>
-                        </div>
                     </div>
-                </div>
-                <div class="topic-body span14">
-                    <div id="post-<%= id %>-body" class="<% if( reply_to_post_id ) { %>avoid-tab <% } %>bottom-round contents regular">
-                        <div class="ember-view"></div>
-                        <div class="ember-view cooked">
-                            <%= raw %>
-                        </div>
-                        <section class="ember-view post-menu-area clearfix">
-                            <% if(reply_count > 0) { %>
-                                <button id="post-<%= id %>-reply-toggler" class="show-replies" value="<%= id %>"><span class="badge-posts"><%= reply_count %></span>Replies<i class="icon icon-chevron-down"></i></button>
-                            <% } %>
-                            <nav class="post-controls">
-                                <button title="like this post" class="like">
-                                    <i class="icon-heart"></i>
-                                </button>
-                                <button title="flag this post for attention or send a notification about it">
-                                    <i class="icon-flag"></i>
-                                </button>
-                                <button title="share a link to this post">
-                                    <i class="icon-link"></i>
-                                </button>
-                                <button title="bookmark this post to your user page">
-                                    <i class="icon-bookmark-empty"></i>
-                                </button>
-                                <button id="reply-to-post-<%= id %>" value="<%= id %>" title="begin composing a reply to this post">
-                                    <i class="icon-reply"></i> Reply
-                                </button>
-                            </nav>
-                        </section>
-                    </div>
-                    <section class="ember-view post-actions">
-                        <div class="post-action">
-                            <a href="#"><%= like_count %> people liked this</a>.
-                            <a href="#">Like it too</a>.
-                        </div>
-                    </section>
-                    <!--<div class="ember-view topic-summary"></div>-->
                 </div>
             </div>
-        </article>
-    </div>
+            <div class="topic-body span14">
+                <div id="post-<%= id %>-body" class="<% if( reply_to_post_id ) { %>avoid-tab <% } %>bottom-round contents regular">
+                    <div class="ember-view"></div>
+                    <div class="ember-view cooked">
+                        <%= raw %>
+                    </div>
+                    <section class="ember-view post-menu-area clearfix">
+                        <% if (reply_count > 0) { %>
+                            <button name="post-reply-toggler" class="show-replies" value="<%= id %>"><span class="badge-posts"><%= reply_count %></span>Replies<i class="icon icon-chevron-down"></i></button>
+                        <% } %>
+                        <nav class="post-controls">
+                            <button id="btn-edit-<%= id %>" name="btn-edit" value="<%= id %>" title="edit this post" class="edit">
+                                <i class="icon-pencil"></i>
+                            </button><button id="btn-like-<%= id %>" name="btn-like" value="<%= id %>" style="display:<% if (typeof is_liked !== 'undefined') { %>none<% } else { %>inline<% } %>" title="like this post" class="like">
+                                <i class="icon-heart"></i>
+                            </button><button title="flag this post for attention or send a notification about it">
+                                <i class="icon-flag"></i>
+                            </button><button title="share a link to this post">
+                                <i class="icon-link"></i>
+                            </button><button name="btn-bookmark" value="<%= id %>" title="bookmark this post to your user page">
+                                <% if (typeof is_bookmarked === 'undefined') { %>
+                                    <i class="icon-bookmark-empty"></i>
+                                <% } else { %>
+                                    <i class="icon-bookmark"></i>
+                                <% } %>
+                            </button><button name="reply-post" value="<%= id %>" title="begin composing a reply to this post">
+                                <i class="icon-reply"></i> Reply
+                            </button>
+                        </nav>
+                    </section>
+                </div>
+                <section class="ember-view post-actions">
+                    <div id="like-status-<%= id %>" value="<%= id %>" style="display:<% if (like_count <= 0 ) { %>none<% } else { %>inline<% } %>" class="post-action">
+                        <a id="post-like-toggler-<%= id %>" value="<%= id %>" style="cursor:default"><span id="post-like-count-<%= id %>"><%= like_count %></span> people liked this.</a>
+                        <a id="post-unlike-<%= id %>" name="post-unlike" value="<%= id %>" style="cursor:pointer;display:<% if (typeof is_liked === 'undefined') { %>none<% } else { %>inline<% } %>" >Undo like.</a>
+                    </div>
+                </section>
+                <!--<div class="ember-view topic-summary"></div>-->
+            </div>
+        </div>
+    </article>
 </script>

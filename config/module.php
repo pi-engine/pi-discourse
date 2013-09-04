@@ -82,7 +82,8 @@ return array(
                     'topic_user'        => 'table',
                     'post_action'       => 'table',
                     'post_action_type'  => 'table',
-                    'notifications'     => 'table',
+                    'notification'      => 'table',
+                    'user_action'       => 'table',
                 )
             ),
             // Module configs

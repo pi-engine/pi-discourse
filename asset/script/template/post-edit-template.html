@@ -1,0 +1,26 @@
+<script type="text/template" id="post-edit-template">
+    <!--- class="ember-view processed closed" ---->
+    <!--- class="ember-view processed open show-preview" ---->
+    <div id="reply-control" name="edit-control" class="ember-view processed open show-preview" style="height: 363px;">
+        <div class="grippie"></div>
+        <div class="spinner">Uploading...</div>
+        <div class="contents">
+            <div class="control">
+                <a href="#" class="toggler" title="toggle" id="edit-post-toggler"></a>
+                <div class="control-row reply-area">
+                    <div class="reply-to">edit:</div>
+                    <div class="textarea-wrapper">
+                        <textarea id="editor3" class="ckeditor ember-view ember-text-area" tabindex="3"></textarea>
+                    </div>
+                    <div class="submit-panel">
+                        <!--
+                        <button tabindex="4" disabled="disabled" class="btn btn-primary create">Reply</button>
+                        -->
+                        <button tabindex="4" id="btn-post-edit-submit" class="btn btn-primary create">Submit</button>
+                        <a style="cursor:pointer" id="submit_cancel" class="cancel" tabindex="4">cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

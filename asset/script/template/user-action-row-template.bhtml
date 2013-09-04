@@ -1,0 +1,32 @@
+<script type="text/template" id="user-action-row-template">
+  <div class="item">
+    <div class="clearfix info">
+      <a href="/discourse/u/<%= post_user_id %>" class="avatar-link"><div class="avatar-wrapper"><img width="45" height="45" src="https://www.gravatar.com/avatar/<%= post_user_avatar %>.png?s=45&amp;r=pg&amp;d=identicon" class="avatar actor" title="<%= post_user_name %>"></div></a>
+      <span class="time"><span class="relative-date date" title="<%= time_created %>" data-format="medium-with-ago"><%= time_created %></span></span>
+      <span class="title">
+          <a href="/discourse/t/<%= topic_id %>"><%= topic_title %></a>
+      </span>
+      <span class="type">
+        <% if (action_type === 'response') { %>
+          Replied by
+        <% } else {%>
+          Posted by
+        <% } %>
+        <a href="/discourse/u/<%= post_user_id %>"><%= post_user_name %></a>
+      </span>
+    </div>
+    <p class="excerpt"><%= post_raw %></p>
+    <% if (action_type === 'bookmark' || action_type === 'like' || action_type === 'star') { %>
+      <div class="child-actions">
+        <% if (action_type === 'bookmark') { %>
+          <i class="icon icon-bookmark"></i>
+        <% } else if (action_type === 'like') { %>
+          <i class="icon icon-heart"></i>
+        <% } else if (action_type === 'star') { %>
+          <i class="icon icon-star"></i>
+        <% } %>
+        <a href="/discourse/u/<%= action_user_id %>" class="avatar-link"><div class="avatar-wrapper"><img width="20" height="20" src="https://www.gravatar.com/avatar/<%= action_user_avatar %>.png?s=20&amp;r=pg&amp;d=identicon" class="avatar actor" title="<%= action_user_name %>"></div></a>
+    </div>
+    <% } %>
+  </div>
+</script>

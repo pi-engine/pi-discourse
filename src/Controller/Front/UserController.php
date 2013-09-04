@@ -8,30 +8,6 @@ use Module\Discourse\Lib\DiscourseRestfulController;
 
 class UserController extends DiscourseRestfulController
 {
-    public function initAccount($piAccountInfo)
-    {
-        $userData = $piAccountInfo->account;
-        $data = array( 
-                    'id'        => $userData->id,
-                    'username'  => $userData->identity,
-                    'email'     => $userData->email,
-                    'name'      => $userData->name,
-                    'avatar'    => md5( strtolower( trim( $userData->email ) ) ),
-                );
-        $row = \Pi::model('user', 'discourse')->createRow($data);
-        $row->save();
-        if (!$row->time_updated) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-    
-    public function isAdmin()
-    {
-        return false;
-    }
-    
     /*
      * /user GET
      * 
@@ -113,53 +89,4 @@ class UserController extends DiscourseRestfulController
         throw new \Zend\Mvc\Exception\DomainException('Invalid HTTP method!');
     }
     
-
-    
-    public function getUserInfo($id)
-    {
-        $model = \Pi::model('user', 'discourse');
-        $rowset = $model->select(array('id = ?' => $id));
-        $userInfo = $rowset->toArray();
-        return $userInfo[0];
-    }
-
-    public function updateUserInfoAction($id)
-    {
-        return $this->params('id');
-    }
-   
-    public function deleteUserAction($id)
-    {
-        return $this->params('id');
-    }
- 
-    public function getCurrentUserInfo()
-    {
-        $default = array(
-                    'name'      => 'guest',
-                    'isguest'   => true,
-                );
-        if (Pi::service('authentication')->hasIdentity()) {
-            $piAccountInfo = Pi::registry('user');
-            $piAccountId = $piAccountInfo->account->id;
-            $userData = $this->getUserInfo($piAccountId);
-            if(!$userData) {
-                if($this->initAccount($piAccountInfo)) {
-                    $userData = $this->getUserInfo($piAccountId);
-                } else {
-                    return $default;
-                }
-            }
-            $result = array(
-                        'id'        => $userData['id'],
-                        'username'  => $userData['username'],
-                        'email'     => $userData['email'],
-                        'name'      => $userData['name'],
-                        'isguest'   => false,
-                    );
-            return $result;
-        } else {
-            return $default;
-        }     
-    }
 }

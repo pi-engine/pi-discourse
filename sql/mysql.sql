@@ -13,21 +13,21 @@ CREATE TABLE `{user}` (
     `email`                     VARCHAR(255)        NOT NULL,                   # `email`
     `password_hash`             VARCHAR(64),                                    # `password_hash`
     `salt`                      VARCHAR(32),                                    # `salt`
-    `active`                    boolean,                                        # `active`
+    `active`                    TINYINT(1),                                        # `active`
   # `username_lower`            VARCHAR(20)         NOT NULL,                   # `username_lower`
     `auth_token`                VARCHAR(32),                                    # `auth_token`
     `time_last_seen`            INT UNSIGNED        DEFAULT NULL,               # `last_seen_at`
     `website`                   VARCHAR(255),                                   # `website`
-    `admin`                     boolean             NOT NULL DEFAULT false,
+    `admin`                     TINYINT(1)          NOT NULL DEFAULT false,
     `avatar`                    VARCHAR(128)        DEFAULT NULL,               # added
-  # `moderator`                 boolean             NOT NULL DEFAULT false,     # `moderator`
+  # `moderator`                 TINYINT(1)          NOT NULL DEFAULT false,     # `moderator`
   # `last_emailed_at`           INT UNSIGNED        DEFAULT NULL,               # `last_emailed_at`
-  # `email_digests`             boolean             NOT NULL DEFAULT true,      # `email_digests`
+  # `email_digests`             TINYINT(1)          NOT NULL DEFAULT true,      # `email_digests`
   # `trust_level_id`            INT(10) unsigned    NOT NULL DEFAULT 1,         # `trust_level_id`
     `bio_cooked`                TEXT,                                           # `bio_cooked`
-  # `email_private_messages`    boolean             DEFAULT true,               # `email_private_messages`
-  # `email_direct`              boolean             NOT NULL DEFAULT true,      # `email_direct`
-  # `approved`                  boolean             NOT NULL DEFAULT false,     # `approved`
+  # `email_private_messages`    TINYINT(1)          DEFAULT true,               # `email_private_messages`
+  # `email_direct`              TINYINT(1)          NOT NULL DEFAULT true,      # `email_direct`
+  # `approved`                  TINYINT(1)          NOT NULL DEFAULT false,     # `approved`
   # `approved_by_id`            INT(10) unsigned,                               # `approved_by_id`
   # `approved_at`               DATETIME,                                       # `approved_at`
   # `topics_entered`            INT(10) unsigned    NOT NULL DEFAULT 0,         # `topics_entered`
@@ -88,16 +88,16 @@ CREATE TABLE `{topic}` (
     `bookmark_count`        INT(10) unsigned    NOT NULL DEFAULT 0,
     `star_count`            INT(10) unsigned    NOT NULL DEFAULT 0,
     `category_id`           INT(10) unsigned    NOT NULL,
-    `visible`               BOOLEAN             NOT NULL DEFAULT true,
+    `visible`               TINYINT(1)          NOT NULL DEFAULT true,
   # `moderator_posts_count` INT(10) unsigned    NOT NULL DEFAULT 0,
-    `closed`                BOOLEAN             NOT NULL DEFAULT false,
-    `pinned`                BOOLEAN             NOT NULL DEFAULT false,
-  # `archived`              BOOLEAN             NOT NULL DEFAULT false,
+    `closed`                TINYINT(1)          NOT NULL DEFAULT false,
+    `pinned`                TINYINT(1)          NOT NULL DEFAULT false,
+  # `archived`              TINYINT(1)          NOT NULL DEFAULT false,
   # `bumped_at`             DATETIME            NOT NULL DEFAULT 0,
   # `sub_tag`               VARCHAR(255),
-  # `has_best_of`           BOOLEAN             NOT NULL DEFAULT false,
+  # `has_best_of`           TINYINT(1)          NOT NULL DEFAULT false,
     `meta_data`             VARCHAR(255),
-  # `vote_count`            BOOLEAN             NOT NULL DEFAULT false,
+  # `vote_count`            TINYINT(1)          NOT NULL DEFAULT false,
   # `archetype`             VARCHAR(255)        NOT NULL,
     PRIMARY KEY (`id`),
     KEY (`time_last_posted`),
@@ -154,8 +154,8 @@ CREATE TABLE `{topic_user}` (
     `id`                        INT(10) UNSIGNED    NOT NULL auto_increment,
     `user_id`                   INT(10) UNSIGNED    NOT NULL,
     `topic_id`                  INT(10) UNSIGNED    NOT NULL,
-    `starred`                   BOOLEAN             NOT NULL DEFAULT false,
-    `posted`                    BOOLEAN             NOT NULL DEFAULT false,
+    `starred`                   TINYINT(1)          NOT NULL DEFAULT false,
+    `posted`                    TINYINT(1)          NOT NULL DEFAULT false,
     `last_read_post_number`     INT(10) UNSIGNED    NOT NULL DEFAULT 1,
     `seen_post_count`           INT(10) UNSIGNED    NOT NULL DEFAULT 0,
     `time_starred`              INT UNSIGNED        NOT NULL,                   # `starred_at`
@@ -183,6 +183,7 @@ CREATE TABLE `{post_action}` (
     `time_created`              INT UNSIGNED        NOT NULL,                   # `created_at` 
     `time_updated`              INT UNSIGNED        NOT NULL,                   # `updated_at`
     PRIMARY KEY (`id`),
+    KEY (`post_id`, `user_id`, `post_action_type_id`),
     KEY (`post_id`),
     KEY (`user_id`),
     KEY (`post_action_type_id`),
@@ -193,7 +194,7 @@ CREATE TABLE `{post_action}` (
 CREATE TABLE `{post_action_type}` (
     `id`                        INT(10) UNSIGNED    NOT NULL,
     `name_key`                  VARCHAR(50)         NOT NULL,
-    `is_flag`                   BOOLEAN             NOT NULL DEFAULT false,
+    `is_flag`                   TINYINT(1)          NOT NULL DEFAULT false,
     `icon`                      VARCHAR(20),
     `time_created`              INT UNSIGNED        NOT NULL,                   # `created_at`
     `time_updated`              INT UNSIGNED        NOT NULL,                   # `updated_at`
@@ -201,13 +202,13 @@ CREATE TABLE `{post_action_type}` (
     KEY (`is_flag`)
 )ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
-# DROP TABLE IF EXISTS `notifications`;
-CREATE TABLE `{notifications}` (
+# DROP TABLE IF EXISTS `notification`;
+CREATE TABLE `{notification}` (
     `id`                        INT(10) UNSIGNED    NOT NULL auto_increment,
     `notification_type`         INT(10) UNSIGNED    NOT NULL,
     `user_id`                   INT(10) UNSIGNED    NOT NULL,
     `data`                      VARCHAR(255)        NOT NULL,
-    `read`                      BOOLEAN             NOT NULL DEFAULT false,
+    `read`                      TINYINT(1)          NOT NULL DEFAULT false,
     `time_created`              INT UNSIGNED        NOT NULL,                   # `created_at`
     `time_updated`              INT UNSIGNED        NOT NULL,                   # `updated_at`
     `topic_id`                  INT(10) UNSIGNED,
@@ -217,3 +218,25 @@ CREATE TABLE `{notifications}` (
     KEY (`user_id`),
     KEY (`read`)
 )ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+# DROP TABLE IF EXISTS `user_action`;
+CREATE TABLE `{user_action}` (
+    `id`                        INT(10) UNSIGNED    NOT NULL auto_increment,
+    `action_type`               INT(10) UNSIGNED    NOT NULL,
+    `user_id`                   INT(10) UNSIGNED    NOT NULL,
+    `target_topic_id`           INT(10) UNSIGNED    NOT NULL,
+    `target_post_id`            INT(10) UNSIGNED    NOT NULL,
+    `target_user_id`            INT(10) UNSIGNED    NOT NULL,
+    `acting_user_id`            INT(10) UNSIGNED    NOT NULL,
+    `time_created`              INT(10) UNSIGNED    NOT NULL,
+    `time_updated`              INT(10) UNSIGNED    NOT NULL,
+    PRIMARY KEY (`id`),
+    KEY (`user_id`),
+    KEY (`action_type`),
+    KEY (`target_user_id`)
+)ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+# `action_type`:
+# USER_ACTION_BOOKMARK      = 1;
+# USER_ACTION_LIKE          = 2;
+# USER_ACTION_STAR          = 3;
+# USER_ACTION_RESPONSE      = 4;

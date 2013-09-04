@@ -53,29 +53,42 @@ class DiscourseRoute extends Standard
             $second = isset($params[1]) ? $params[1] : null;
             $third  = isset($params[2]) ? $params[2] : null;
             $fourth = isset($params[3]) ? $params[3] : null;
+//            $fifth  = isset($params[4]) ? $params[4] : null;
             
             if ('user' === $first 
+                || 'userAction' === $first 
                 || 'category' === $first 
                 || 'topic' === $first 
                 || 'post' === $first 
                 || 'postAction' === $first 
                 || 'star' === $first 
+                || 'postReply' === $first 
+                || 'notification' === $first 
                 || 0
             ) {
                 $matches['controller']  = $first;
                 $matches['action']      = null;
                 $matches['id']          = is_numeric($params[1]) ? $params[1] : null;
                 $matches['offset']      = is_numeric($params[2]) ? $params[2] : null;
-                $matches['limit']       = is_numeric($params[3]) ? $params[3] : null;
+                $matches['limit']       = is_numeric($params[3]) ? $params[3] : null;                
             } else if ('register' === $first) {
                 $matches['controller']  = 'clientRegister';
                 $matches['action']      = 'register';
             } else if ('c' === $first) {
                 if($second) {
-                    $matches['id']      = is_numeric($params[1]) ? $params[1] : null;
-                    if($matches['id']) {
+                    if(is_numeric($second)) {
+                        $matches['id']          = is_numeric($second) ? $second : null;
                         $matches['controller']  = 'clientCategory';
                         $matches['action']      = 'category';
+                    } else if(strpos($second, ".json")) {
+                        $c_id = str_replace(".json", "", $second);
+                        if(is_numeric($c_id)) {
+                            $matches['id']          = $c_id;
+                            $matches['controller']  = 'clientCategory';
+                            $matches['action']      = 'categoryJson';
+                        } else {
+                            return null;
+                        }
                     } else {
                         return null;
                     }
@@ -85,94 +98,67 @@ class DiscourseRoute extends Standard
                 }
             } else if ('t' === $first) {
                 if($second) {
-                    $matches['id']      = is_numeric($params[1]) ? $params[1] : null;
-                    if($matches['id']) {
+                    if(is_numeric($second)) {
+                        $matches['id']          = is_numeric($second) ? $second : null;
                         $matches['controller']  = 'clientTopic';
                         $matches['action']      = 'topic';
+                    } else if(strpos($second, ".json")) {
+                        $c_id = str_replace(".json", "", $second);
+                        if(is_numeric($c_id)) {
+                            $matches['id']          = $c_id;
+                            $matches['controller']  = 'clientTopic';
+                            $matches['action']      = 'topicJson';
+                        } else {
+                            return null;
+                        }
                     } else {
                         return null;
                     }
                 } else {
                     return null;
                 }
+                
+//                if($second) {
+//                    $matches['id']      = is_numeric($params[1]) ? $params[1] : null;
+//                    if($matches['id']) {
+//                        $matches['controller']  = 'clientTopic';
+//                        $matches['action']      = 'topic';
+//                    } else {
+//                        return null;
+//                    }
+//                } else {
+//                    return null;
+//                }
+            } else if ('u' === $first) {
+                if($second) {
+                    if(is_numeric($second)) {
+                        $matches['id']          = is_numeric($second) ? $second : null;
+                        $matches['controller']  = 'clientUser';
+                        $matches['action']      = 'user';
+                    } else if(strpos($second, ".json")) {
+                        $c_id = str_replace(".json", "", $second);
+                        if(is_numeric($c_id)) {
+                            $matches['id']          = $c_id;
+                            $matches['controller']  = 'clientUser';
+                            $matches['action']      = 'userJson';
+                        } else {
+                            return null;
+                        }
+                    } else {
+                        return null;
+                    }
+                } else {
+                    return null;
+                }
+            } else if ('c.json' === $first) {
+                $matches['controller']  = 'clientCategory';
+                $matches['action']      = 'categoryListJson';
             } else {
                 return null;
             }
-            
-            
-            
-            
-//            if ('category' === $first) {
-//                if ($fourth) {
-//                    if ($request->isGet()
-//                            && is_numeric($second) 
-//                            && is_numeric($fourth) 
-//                            && is_numeric($third)) {
-//                        $matches['id'] = $second;
-//                        $matches['offset'] = $third;
-//                        $matches['limit'] = $fourth;
-//                        $matches['controller'] = 'category';
-//                        $matches['action']     = 'getTopics';
-//                    } else {
-//                        return null;
-//                    }
-//                } else if ($second) {
-//                    if ($request->isGet() && is_numeric($second)) {
-//                        $matches['id'] = $second;
-//                        $matches['controller'] = 'category';
-//                        $matches['action']     = 'getCategoryInfo';
-//                        unset($params[0]);
-//                    } else {
-//                       return null;
-//                    }
-//                } else if (!$second) {
-//                    if ($request->isGet()) {
-//                        $matches['controller'] = 'category';
-//                        $matches['action']     = 'allCategories';
-//                    }
-//                }
-//            } else if ('topic' === $first) {
-//                if ($second) {
-//                    if (is_numeric($second)) {
-//                        if ($method == 'GET') {
-//                            $matches['id'] = $second;
-//                            $matches['controller'] = 'topic';
-//                            $matches['action']     = 'getTopic';
-//                        } else if ($method == 'PUT') {
-//                            $matches['id'] = $second;
-//                            $matches['controller'] = 'topic';
-//                            $matches['action']     = 'updateTopic';
-//                        } else if ($method == 'DELETE') {
-//                            $matches['id'] = $second;
-//                            $matches['controller'] = 'topic';
-//                            $matches['action']     = 'deleteTopic';
-//                        } else {
-//                            return null;
-//                        }
-//                    } else {
-//                        return null;
-//                    }
-//                    
-//                } else {
-//                    if ($method == 'POST') {
-//                        $matches['controller'] = 'topic';
-//                        $matches['action']     = 'createTopic';
-//                    } else {
-//                        return null;
-//                    }
-//                }
-//            } else if ('user' === $first) {
-//                $matches['controller'] = 'user';
-//                $matches['action'] = null;
-//            } else {
-//                return null;
-//            }
-            
-            //if (!empty($params)) {
-            //    return null;
-            //}
+
         }
-//        d(array_merge($this->defaults, $matches));
+//        var_dump(array_merge($this->defaults, $matches));
         return new RouteMatch(array_merge($this->defaults, $matches), $pathLength);
     }
 

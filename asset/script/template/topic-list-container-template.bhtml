@@ -7,7 +7,7 @@
                         <table id="topic-list">
                             <thead>
                                 <tr>
-                                    <% if (!disStorage.user.get('isguest')) { %>
+                                    <% if (!require('storage/appStorage').user.get('isguest')) { %>
                                         <th>&nbsp;</th>
                                     <% } %>
                                     <th>Topic</th>

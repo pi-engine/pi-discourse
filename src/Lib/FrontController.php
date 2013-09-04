@@ -17,59 +17,31 @@ class FrontController extends ActionController
     
     public $userInfo;
     
-    // category controller
-    public $cc;
-    
-    // user controller 
-    public $uc;
-    
-    // topic controller
-    public $tc;
+    public $notificationCount;
     
     public function __construct() {
         $this->preStoreData();
-        Pi::service('theme')->setTheme('discourse');
     }
     
-    public function preStore($offset, $data)
+    public function preStore($key, $data)
     {
         $this->preloadStore .= 
                 "PreloadStore.store(" 
-                . "\"" . $offset . "\"," 
+                . "\"" . $key . "\","
                 . json_encode($data) . ");";
     }
     
     public function preStoreData()
     {
-        $this->categories = $this->cc()->allCategories();
+        $this->categories   = Pi::service('api')->discourse(array('category', 'allCategories'));
+        $this->userInfo     = Pi::service('api')->discourse(array('user', 'getCurrentUserInfo'));
+        if ($this->userInfo['id']) {
+            $this->notificationCount = Pi::service('api')->discourse(array('notification', 'getUnreadCount'), $this->userInfo['id']);
+            $this->preStore('notificationCount', $this->notificationCount);
+//            Pi::service('api')->discourse(array('notification', 'getUnreadNotification'), $this->userInfo['id']);
+        }
         
-        $this->userInfo = $this->uc()->getCurrentUserInfo();
-                
         $this->preStore('user', $this->userInfo);
         $this->preStore('categories', $this->categories);
-    }
-    
-    public function uc()
-    {
-        if (!isset($this->uc)) {
-            $this->uc = new UserController();
-        }
-        return $this->uc;
-    }
-    
-    public function cc()
-    {
-        if (!isset($this->cc)) {
-            $this->cc = new CategoryController();
-        }
-        return $this->cc;
-    }
-    
-    public function tc()
-    {
-        if (!isset($this->tc)) {
-            $this->tc = new TopicController();
-        }
-        return $this->tc;
     }
 }

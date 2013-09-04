@@ -1,16 +1,7 @@
 <script type="text/template" id="topic-main-template">
 <div class="ember-view regular">
     <div id="topic-title">
-        <div class="container">
-            <div class="inner">
-                <a class="star" href="#" title="add this topic to your favorites list"></a>
-                <h1>
-                    <a href="/t/replay-as-topic/6"><%= title %></a>
-                    <a href="#" class="edit-topic" title="edit the title and category of this topic">
-                        <i class="icon-pencil"></i>
-                    </a>
-                </h1>
-            </div>
+        <div class="container" id="topic-title-container">
         </div>
     </div>
     <div class="container posts">

@@ -1,0 +1,3 @@
+<script type="text/template" id="main-header-unread-notification-row-template">
+<li class=""><i class="icon icon-reply" title="reply"></i> <%= data.display_username %> <a href="/discourse/t/<%= topic_id %>"><%= data.topic_title %></a></li>
+</script>
