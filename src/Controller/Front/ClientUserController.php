@@ -23,9 +23,6 @@ class ClientUserController extends FrontController
         
         $this->view()->setLayout('layout-content');
         $this->view()->setTemplate('discourse');
-
-        return $clres;
-        
     }
     
     public function userJsonAction()

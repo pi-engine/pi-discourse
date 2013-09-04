@@ -34,11 +34,11 @@ class Post extends AbstractApi
         $userActionModel    = \Pi::model('user_action', 'discourse');
         
         $userData = Pi::service('api')->discourse(array('user', 'getCurrentUserInfo'));
-        if($userData['isguest']) {
+        if ($userData['isguest']) {
             return array( 'err_msg' => "You haven't logged in." );
         }
         
-        if(isset($data['topic_id'])){
+        if (isset($data['topic_id'])) {
             $topicRow = $topicModel->find(intval($data['topic_id']));
             if(!$topicRow->id) {
                 return array( 'err_msg' => "No such topic." );
@@ -127,7 +127,7 @@ class Post extends AbstractApi
             );
 
             
-            if($replyToPostId) {
+            if ($replyToPostId) {
                 if ($notificationData['replied_post_user_id']) {
                     Pi::service('api')->discourse(
                         array('notification', 'createNotification'),
@@ -458,7 +458,7 @@ class Post extends AbstractApi
     public function timeFromNow($time)
     {
         $seconds = (time() - $time);
-        if($seconds > 31536000) {
+        if ($seconds > 31536000) {
             return intval($seconds / 31536000) . 'Y';
         } else if ($seconds > 86400) { 
             return intval($seconds / 86400) . 'd';

@@ -23,11 +23,11 @@ class FrontController extends ActionController
         $this->preStoreData();
     }
     
-    public function preStore($offset, $data)
+    public function preStore($key, $data)
     {
         $this->preloadStore .= 
                 "PreloadStore.store(" 
-                . "\"" . $offset . "\"," 
+                . "\"" . $key . "\","
                 . json_encode($data) . ");";
     }
     
