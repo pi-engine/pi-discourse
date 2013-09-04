@@ -24,6 +24,13 @@ abstract class DiscourseRestfulController extends ActionController
     protected $eventIdentifier = __CLASS__;
 
     /**
+     * Set theme to discourse
+     */
+    public function __construct() {
+        Pi::service('theme')->setTheme('discourse');
+    }
+    
+    /**
      * Return list of resources
      *
      * @return mixed
@@ -201,16 +208,18 @@ abstract class DiscourseRestfulController extends ActionController
         //$e->setResult($return);
 
         // Collect directly returned scalar content
-        if (null !== $return && is_scalar($return)) {
-            $this->view()->setTemplate(false);
-            $this->view()->assign('content', $return);
-            $return = null;
-        }
-        if (null === $return && $this->view()->hasViewModel()) {
-            $return = $this->view()->getViewModel();
-            $e->setResult($return);
-        }
 
+//        if (null !== $return && is_scalar($return)) {
+//            $this->view()->setTemplate(false);
+//            $this->view()->assign('content', $return);
+//            $return = null;
+//        }
+//        if (null === $return && $this->view()->hasViewModel()) {
+//            $return = $this->view()->getViewModel();
+//            $e->setResult($return);
+//        }
+        
+        $e->setResult($return);
         return $return;
     }
 

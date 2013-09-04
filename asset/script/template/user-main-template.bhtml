@@ -1,0 +1,83 @@
+<script type="text/template" id="user-main-template">
+  <div id="ember1686" class="ember-view">
+    <div class="user-heading">
+      <div class="container">
+        <div class="full-width" id="user-menu">
+          <h1><%= name %><!--<span>forumadmin</span>--></h1>
+          <button data-ember-action="237" class="btn">Log Out</button>
+          <a href="/admin/users/forumadmin" class="btn"><i class="icon-wrench"></i>&nbsp;Admin</a>
+          <ul class="nav nav-pills">
+            <li>
+              <a id="ember1758" class="ember-view active" href="/users/forumadmin">Activity</a>
+            </li>
+            <li>
+              <a id="ember1760" class="ember-view" href="/users/forumadmin/private-messages">Messages</a>
+            </li>
+            <li>
+              <a id="ember1761" class="ember-view" href="/users/forumadmin/invited">Invites</a>
+            </li>
+            <li>
+              <a id="ember1763" class="ember-view" href="/users/forumadmin/preferences">Preferences</a>
+            </li>
+          </ul>
+          <div class="avatar-wrapper">
+            <img width="120" height="120" src="https://www.gravatar.com/avatar/<%= avatar %>.png?s=120&amp;r=pg&amp;d=identicon" class="avatar" title="<%= name %>">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="user-info clearfix">
+         <div class="about-me">
+           <div class="missing-profile">the About Me field of your profile is currently blank, <a href="/users/forumadmin/preferences">would you like to fill it out?</a></div>
+         </div>
+      </div>
+    </div>
+    <div class="container">
+      <div id="ember1739" class="ember-view">
+        <div id="user-info"> 
+          <nav class="buttons">
+            <a id="ember1771" class="ember-view btn" href="/users/forumadmin/preferences">Edit Preferences</a><br>
+          </nav>
+          <div class="clearfix">
+          </div>
+          <ul class="action-list nav-stacked side-nav">
+            <% if (typeof actionCount.star === 'undefined') { actionCount.star = 0 } %>
+            <li name="filter" value="4" class="filter ember-view active"><a style="hover:pointer">Favorites <span class="count">(<%= actionCount.star %>)</span><span class="icon-chevron-right"></span></a></li>
+            <% if (typeof actionCount.star !== 'undefined' && actionCount.bookmark > 0) { %>
+              <li name="filter" value="1" class="filter ember-view"><a style="hover:pointer">Bookmarks <span class="count">(<%= actionCount.bookmark %>)</span><span class="icon-chevron-right"></span></a></li>
+            <% } %>
+            <% if (typeof actionCount.star === 'undefined') { actionCount.topic = 0 } %>
+            <li name="filter" value="5" class="filter ember-view"><a style="hover:pointer">Topics <span class="count">(<%= actionCount.topic %>)</span><span class="icon-chevron-right"></span></a></li>
+            <% if (typeof actionCount.star === 'undefined') { actionCount.post = 0 } %>
+            <li name="filter" value="6" class="filter ember-view"><a style="hover:pointer">Posts <span class="count">(<%= actionCount.post %>)</span><span class="icon-chevron-right"></span></a></li>
+            <% if (typeof actionCount.star !== 'undefined' && actionCount.response > 0) { %>
+              <li name="filter" value="7" class="filter ember-view"><a style="hover:pointer">Responses <span class="count">(<%= actionCount.response %>)</span><span class="icon-chevron-right"></span></a></li>
+            <% } %>
+            <% if (typeof actionCount.star !== 'undefined' && actionCount.like > 0) { %>
+              <li name="filter" value="2" class="filter ember-view"><a style="hover:pointer">Likes Given <span class="count">(<%= actionCount.like %>)</span><span class="icon-chevron-right"></span></a></li>
+            <% } %>
+            <% if (typeof actionCount.star !== 'undefined' && actionCount.like_receive > 0) { %>
+              <li name="filter" value="3" class="filter ember-view"><a style="hover:pointer">Likes Received <span class="count">(<%= actionCount.like_receive %>)</span><span class="icon-chevron-right"></span></a></li>
+            <% } %>
+
+          </ul>
+          <div class="show">
+            <dl>
+              <dt>Created At:</dt><dd><span class="date" title="March 21, 2013 6:43am"><%= time_created %></span></dd>
+              <dt>Last Post:</dt><dd><span class="date" title="May 29, 2013 2:24pm"><%= time_last_posted %></span></dd>
+              <dt>Last Seen:</dt><dd><span class="date" title="<%= time_last_seen %>"><%= time_from_last_seen %></span></dd>
+              <dt>Email:</dt><dd title="<%= email %>"><%= email %></dd>
+              <dt>Trust Level:</dt><dd>visitor</dd>
+            </dl>
+          </div>
+        </div>
+        <div id="ember1806" class="ember-view">
+          <div id="user-stream">
+          </div>
+        </div>
+        <div id="user-stream-bottom"></div>
+      </div>
+    </div>
+  </div>
+</script>

@@ -1,0 +1,44 @@
+<?php
+// Load translation data
+$this->i18nTheme('main');
+/**
+ * $this->css(Pi::url('static/vendor/bootstrap/css/font-awesome.min.css'));
+ * 
+ * conflict with discourse.css
+ */
+$this->css($this->asset('module/discourse', '/css/discourse.css'));
+?>
+<?php
+    $this->jQuery();
+    $this->backbone();
+    $this->js($this->asset('module/discourse', 'script/preload_store.js'));
+    $this->js($this->asset('module/discourse', 'script/vendor/requirejs/require.js'));
+    $this->js($this->asset('module/discourse', 'script/vendor/ckeditor/ckeditor.js'));
+    $this->js($this->asset('module/discourse', 'script/app.js'));
+//    $this->js($this->asset('module/discourse', 'script/app-build.js'));
+    $this->headMeta()->appendName('controllerName', $this->controllerName);
+    $this->headMeta()->appendName(
+        'requireBase',
+        Pi::service('asset')->getModuleAsset('script/', 'discourse', false)
+    );
+?>
+<!DOCTYPE HTML>
+<html lang="<?php echo $locale; ?>">
+<head>
+<meta charset="<?php echo $charset; ?>">
+<?php echo $this->headTitle(); ?>
+</head>
+<script type="text/javascript">
+   <?php if (!empty($this->preloadStore)) echo $this->preloadStore;?>
+</script>
+<body class="docked">
+<section id="main" class="ember-application">
+<div class="ember-view">
+<header id="main-header" class="ember-view d-header clearfix">
+</header>
+<div id="main-outlet">
+</div>
+</div>
+</section>
+</body>
+</html>
